@@ -5,7 +5,7 @@ postinstall:
 	npm run postinstall
 
 start:
-	npx start-server -s ./frontend/dist
+	make -C frontend server
 
 build:
 	make -C frontend build
