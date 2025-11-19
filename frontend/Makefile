@@ -1,11 +1,11 @@
 install:
 	npm ci
 
-start:
+server:
 	npm start
 
 build:
 	npm run build
 
 lint:
-	npx eslint
+	npx eslint --ext js,jsx --no-config-lookup .
