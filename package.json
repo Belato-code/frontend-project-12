@@ -13,7 +13,7 @@
   "license": "ISC",
   "author": "Artem Evdokimov",
   "type": "module",
-  "main": "src/index.js",
+  "main": "frontend/src/main.jsx",
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "npx start-server -s ./frontend/dist",
