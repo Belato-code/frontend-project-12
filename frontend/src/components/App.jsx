@@ -42,7 +42,10 @@ const AuthButton = () => {
     navigate('/login')
   }
   return auth.loggedIn
-    ? <Button onClick={handleLogOut}>Выйти</Button>
+    ? <>
+      <div className="me-2 text-warning-emphasis fs-4 navbar-text">Signed as: {JSON.parse(localStorage.getItem('userId'))?.username}</div>
+      <Button onClick={handleLogOut}>Выйти</Button>
+    </>
     : <>
       <Button as={Link} to='/login' state={{ from: location }} className='me-1' variant="outline-primary">Вход</Button>
       <Button as={Link} to='/signup' state={{ from: location}} className='ms-1' variant="outline-primary">Регистрация</Button>
@@ -59,9 +62,6 @@ function App() {
           <Container>
             <Navbar.Brand href='/' className='fw-bold text-warning-emphasis'>Join to Chat</Navbar.Brand>
             <Navbar.Collapse className='justify-content-end'>
-              <Navbar.Text className='me-2 text-warning-emphasis fs-4'>
-                Signed as: {JSON.parse(localStorage.getItem('userId'))?.username}
-              </Navbar.Text>
               <AuthButton />
             </Navbar.Collapse>
           </Container>
