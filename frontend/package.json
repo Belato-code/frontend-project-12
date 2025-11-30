@@ -13,6 +13,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
+    "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "formik": "^2.4.9",
     "functional": "^1.0.0",
