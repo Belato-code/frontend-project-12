@@ -55,34 +55,3 @@
   justify-content: center;
   flex-wrap: wrap;
 }
-
-.btn {
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: #007bff;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
-}
-
-.btn-outline {
-  background: transparent;
-  color: #6c757d;
-  border: 2px solid #6c757d;
-}
-
-.btn-outline:hover {
-  background: #6c757d;
-  color: white;
-}
