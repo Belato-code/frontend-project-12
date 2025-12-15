@@ -20,7 +20,9 @@ export const LoginPage = () => {
     onSubmit: async (values) => {
       try {
         const res = await axios.post(routes.loginPath(), values)
-        localStorage.setItem('userId', JSON.stringify(res.data))
+        const { token, username } = res.data
+        localStorage.setItem('authToken', token)
+        localStorage.setItem('username', username)
         auth.logIn()
         navigate('/')
       }

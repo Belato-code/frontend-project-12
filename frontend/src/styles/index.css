@@ -3,6 +3,10 @@
   height: 100vh;
 }
 
+.vh-80 {
+  height: 80vh;
+}
+
 /* CSS для варианта 2 */
 .not-found-page {
   min-height: 100vh;
