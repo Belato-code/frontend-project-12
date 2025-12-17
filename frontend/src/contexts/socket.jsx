@@ -31,13 +31,15 @@ export const SocketProvider = ({ children }) => {
           debug: true
         })
 
+        socketRef.current = newSocket
+
         await new Promise((resolve, reject) => {
-          const timeOut = setTimeout(() => {
+          const timeout = setTimeout(() => {
             reject(new Error('Превышено время ожидания!'))
           }, 10000)
 
           newSocket.once('connect', () => {
-            clearTimeout(timeOut)
+            clearTimeout(timeout)
             resolve()
           })
           newSocket.once('connect_error', (error) => {
@@ -47,12 +49,12 @@ export const SocketProvider = ({ children }) => {
           })
         })
 
-        setSocket(newSocket)
-
         newSocket.on('newMessage', (data) => {
           console.log('📨 Получено новое сообщение от сервера:', data)
           setNewMessages(prev => [...prev, data])
         })
+
+        setSocket(newSocket)
 
       } catch (error) {
         console.error('💥 Ошибка инициализации сокета:', error)
