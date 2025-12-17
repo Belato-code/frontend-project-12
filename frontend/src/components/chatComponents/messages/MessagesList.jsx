@@ -1,8 +1,14 @@
-export const MessagesList = ({ messages }) => {
+import { useTranslation } from "react-i18next"
+
+export const MessagesList = ({ messages}) => {
+  const { t } = useTranslation()
+
   return (
-    <div>
+    <div className="chat-messages overflow-auto px-5 ">
       {messages.length === 0 ? (
-        <p className="text-muted">Нет сообщений</p>
+        <div className="d-flex justify-content-center">
+          <p className="text-muted">{t('chatPage.noMessages')}</p>
+        </div>
       ) : (
         messages.map((message) => (
           <div key={message.id || message.timestamp} className="mb-2">
@@ -10,9 +16,6 @@ export const MessagesList = ({ messages }) => {
               <strong>{message.username}: </strong>
               {message.body}
             </div>
-            <small className="text-muted">
-              {new Date(message.timestamp).toLocaleTimeString()}
-            </small>
           </div>
         ))
       )}

@@ -8,49 +8,32 @@ import { selectCurrentChannel } from "../store/slices/channelsSlice"
 import { MessageForm } from "./chatComponents/messages/MessageForm"
 import { MessagesList } from "./chatComponents/messages/MessagesList"
 import { useSocket } from "../contexts/socket"
+import { useTranslation } from 'react-i18next'
 
 export const ChatPage = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const token = localStorage.getItem('authToken')
   const { data: apiMessages = [] } = useGetMesagesQuery()
   const selectedChannel = useSelector(selectCurrentChannel)
   
-  // ✅ ПРАВИЛЬНО: получаем объект из контекста
   const { socket, newMessages } = useSocket()
   
-  // Проверка авторизации
   useEffect(() => {
     if (!token) {
       navigate('/login')
     }
   }, [token, navigate])
   
-  // ✅ Объединяем сообщения из API и WebSocket
   const allMessages = [...apiMessages, ...newMessages]
+  const filtredMessages = allMessages.filter(message => message.channelId === selectedChannel?.id)
   
-  // Отладка
   useEffect(() => {
     console.log('🟡 ChatPage: socket ID:', socket?.id)
     console.log('🟡 ChatPage: newMessages:', newMessages)
     console.log('🟡 ChatPage: apiMessages count:', apiMessages.length)
     console.log('🟡 ChatPage: allMessages count:', allMessages.length)
   }, [socket, newMessages, apiMessages])
-  
-  // Дополнительная подписка в ChatPage (если нужно)
-  useEffect(() => {
-    if (!socket) return
-    
-    console.log('🟢 Дополнительная подписка в ChatPage')
-    
-    // Отладочная подписка на все события
-    socket.onAny((event, ...args) => {
-      console.log(`🔍 [ChatPage socket event] ${event}`, args)
-    })
-    
-    return () => {
-      socket.offAny()
-    }
-  }, [socket])
   
   return (
     <Container className="mt-4 overflow-hidden vh-80">
@@ -79,16 +62,13 @@ export const ChatPage = () => {
                 # {selectedChannel?.name || 'Выберите канал'}
               </span>
               <div id="counter" className="mt-2">
-                {allMessages.length} сообщений
+                {filtredMessages.length} {t('chatPage.messages.mes', {count: filtredMessages.length})}
               </div>
             </div>
-            
-            {/* ✅ ПЕРЕДАЁМ ВСЕ СООБЩЕНИЯ (API + WebSocket) */}
-            <MessagesList messages={allMessages} />
-            
+            <MessagesList messages={filtredMessages} />
             <MessageForm 
               selectedChannelId={selectedChannel?.id} 
-              socket={socket} // ← ПЕРЕДАЁМ СОКЕТ
+              socket={socket}
             />
           </div>
         </Col>

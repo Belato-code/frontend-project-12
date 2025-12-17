@@ -2,11 +2,14 @@ import { Button, InputGroup, Form } from "react-bootstrap"
 import { useFormik } from "formik"
 import { useRef, useEffect } from "react"
 import { useSocket } from "../../../contexts/socket"
+import { useAddMessageMutation } from "../../../store/api/baseApi"
+import { useTranslation } from "react-i18next"
 
 export const MessageForm = ({ selectedChannelId }) => {
   const inputRef = useRef(null)
+  const [addMessage] = useAddMessageMutation()
+  const { t } = useTranslation()
   
-  // ✅ ПРАВИЛЬНО: деструктуризируем объект
   const { socket } = useSocket()
   
   const username = localStorage.getItem('username')
@@ -15,47 +18,24 @@ export const MessageForm = ({ selectedChannelId }) => {
     initialValues: { body: '' },
     onSubmit: async (values) => {
       const text = values.body.trim()
-      
       if (!text || !selectedChannelId) return
       
-      if (!socket) {
-        console.error('❌ Сокет не подключен')
-        return
-      }
-      
-      console.log('🟢 Отправка, сокет подключен:', socket.connected)
-      
-      // Добавляем timestamp и ID для отслеживания
-      const message = {
-        body: text,
-        channelId: selectedChannelId,
-        username,
-      }
-      
-      console.log('🟢 Отправляю:', message)
-      
       try {
-        // Явно ждём отправки
-        await new Promise((resolve) => {
-          socket.emit('newMessage', message, (response) => {
-            console.log('✅ Ответ от сервера:', response)
-            resolve()
-          })
-          
-          // Таймаут на случай если сервер не отвечает
-          setTimeout(resolve, 1000)
-        })
+        await addMessage({
+          body: text,
+          channelId: selectedChannelId,
+          username,
+        }).unwrap()
         
-        console.log('✅ Сообщение отправлено и подтверждено')
+        console.log('✅ Сообщение отправлено через API')
         formik.resetForm()
-        
       } catch (error) {
-        console.error('💥 Ошибка отправки:', error)
+        console.error('💥 Ошибка:', error)
       }
     }
   })
-
-  // ✅ ДОБАВЛЕНО: обработчик нажатия клавиш
+      
+      
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
@@ -63,7 +43,6 @@ export const MessageForm = ({ selectedChannelId }) => {
     }
   }
 
-  // ✅ Фокус при смене канала
   useEffect(() => {
     if (inputRef.current && selectedChannelId) {
       inputRef.current.focus()
@@ -74,7 +53,7 @@ export const MessageForm = ({ selectedChannelId }) => {
     <Form onSubmit={formik.handleSubmit}>
       <InputGroup className="mb-1 px-2">
         <Form.Control
-          placeholder="Введите сообщение"
+          placeholder={t('chatPage.placeholder')}
           aria-label="message_input"
           name="body"
           ref={inputRef}

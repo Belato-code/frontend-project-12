@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
 export const NotFound = () => {
+  const { t } = useTranslation()
   return (
     <>
       <div className="not-found-page">
@@ -9,14 +11,14 @@ export const NotFound = () => {
         </div>
         <div className="text-content">
           <h1>404</h1>
-          <h2>Ой! Страница пропала</h2>
-          <p>Возможно, она переехала или никогда не существовала.</p>
+          <h2>{t('404.subheader')}</h2>
+          <p>{t('404.paragraf')}</p>
           <div className="actions">
             <Link to="/" className="btn btn-primary">
-              🏠 На главную
+              {t('404.toHome')}
             </Link>
             <button onClick={() => window.history.back()} className="btn btn-outline">
-              ↩️ Назад
+              {t('404.back')}
             </button>
           </div>
         </div>

@@ -33,7 +33,7 @@ export const Channels = () => {
     return (
       <div className="channels-box flex-column px-2 mb-3 list-unstyled" id="channels-box">
         <div className="text-center py-3 text-danger">
-          Error loading channels: {error?.message || 'Unknown error'}
+          {t('channel.error.loading')} {error?.message || t('channel.error.unknown')}
         </div>
       </div>
     )

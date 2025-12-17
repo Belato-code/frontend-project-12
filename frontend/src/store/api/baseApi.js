@@ -51,6 +51,13 @@ const baseApi = createApi({
     }),
     getMesages: builder.query({
       query: () => '/messages',
+    }),
+    addMessage: builder.mutation({
+      query: ( message ) => ({
+        url: '/messages',
+        method: 'POST',
+        body: message,
+      })
     })
   }),
 })
@@ -61,6 +68,7 @@ export const {
   useEditChannelMutation,
   useDeleteChannelMutation,
   useGetMesagesQuery,
+  useAddMessageMutation,
 } = baseApi
 
 export default baseApi

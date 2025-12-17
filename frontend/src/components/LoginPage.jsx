@@ -6,11 +6,13 @@ import routes from "../routes"
 import axios from 'axios'
 import useAuth from "../hooks"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export const LoginPage = () => {
   const inputRef = useRef()
   const auth = useAuth()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const formik = useFormik({
     initialValues: {
@@ -52,13 +54,13 @@ export const LoginPage = () => {
               </div>
               <div className="col-6">
                 <Form onSubmit={formik.handleSubmit}>
-                  <h1 className="text-center">Вход</h1>
+                  <h1 className="text-center">{t('logInPage.header')}</h1>
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
                       onChange={formik.handleChange}
                       value={formik.values.username}
-                      placeholder="Ваш ник"
+                      placeholder={t('logInPage.name')}
                       name="username"
                       id="username"
                       required
@@ -70,20 +72,20 @@ export const LoginPage = () => {
                       type="password"
                       onChange={formik.handleChange}
                       value={formik.values.password}
-                      placeholder="Пароль"
+                      placeholder={t('logInPage.password')}
                       name="password"
                       id="Password"
                       required
                     />
                   </Form.Group>
-                  <Button variant="outline-primary" className="w-100" type="submit">Войти</Button>
+                  <Button variant="outline-primary" className="w-100" type="submit">{t('logInPage.button')}</Button>
                 </Form>
               </div>
               </div>
                 <div className="card-footer p-3">
                   <div className="text-center">
-                    Нет аккаунта?
-                    <a className="ps-2" href="/signup">Регистрация</a>
+                    {t('logInPage.linkPrefix')}
+                    <a className="ps-2" href="/signup">{t('logInPage.link')}</a>
                   </div>
                 </div>
             </div>

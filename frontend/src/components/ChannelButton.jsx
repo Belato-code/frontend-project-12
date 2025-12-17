@@ -1,7 +1,9 @@
 import { Dropdown, Button } from "react-bootstrap"
 import classNames from 'classnames'
+import { useTranslation } from "react-i18next"
 
 export const ChannelButton = ({ channel, isSelected, onSelect }) => {
+  const { t } = useTranslation()
   const btnClass = classNames([
     'fs-5',
     'mt-1',
@@ -37,8 +39,8 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           className='border-0 mt-1'
         />
         <Dropdown.Menu className="super-colors">
-          <Dropdown.Item eventKey="1">Переименовать</Dropdown.Item>
-          <Dropdown.Item eventKey="2">Удалить</Dropdown.Item>
+          <Dropdown.Item eventKey="1">{t('channel.rename')}</Dropdown.Item>
+          <Dropdown.Item eventKey="2">{t('channel.rename')}</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
