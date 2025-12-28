@@ -45,7 +45,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           variant={isSelected ? 'secondary' : 'light'}
           className={btnClass}
           type="button"
-          aria-label={channel.name}
+          aria-label={LeoProfanity.clean(channel.name)}
           onClick={handleSelectChannel}
         >
           <span className="me-1" aria-hidden="true">#</span>
