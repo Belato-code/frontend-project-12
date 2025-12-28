@@ -1,103 +1,136 @@
 import { useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
-import { FormGroup, FormControl, Modal, Button } from "react-bootstrap"
+import { FormGroup, FormControl, Modal, Button, Spinner } from "react-bootstrap"
 import { useAddChannelMutation, useGetChannelsQuery } from "../../../store/api/baseApi"
 import * as Yup from 'yup'
 import { useTranslation } from "react-i18next"
 import { useDispatch } from "react-redux"
 import { setCurrentChannelId } from "../../../store/slices/uiSlice"
-
+import { useToast } from "../../../hooks/useToast"
 
 const Add = ({ onHide }) => {
-  const [addChannel, { isLoading }] = useAddChannelMutation()
-  const { data: channels } = useGetChannelsQuery()
+  const [addChannel, { isLoading: isAdding }] = useAddChannelMutation()
+  const { data: channels = [] } = useGetChannelsQuery()
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [submitAttempted, setSubmitAttempted] = useState(false)
+  const { toastError, toastSuccess } = useToast()
 
   const validationSchema = Yup.object({
     name: Yup.string()
+      .trim()
       .min(3, t('validation.min'))
       .max(20, t('validation.max'))
       .required(t('validation.required'))
-      .test('unique', t('validation.channelIsExist'), (value) => 
-        !channels.some(ch => ch.name.toLowerCase() === value?.toLocaleLowerCase())
-      ),
+      .test('unique', t('validation.channelIsExist'), (value) => {
+        if (!value) return true
+        return !channels.some(ch => 
+          ch.name.toLowerCase() === value.toLowerCase().trim()
+        )
+      }),
   })
 
   const formik = useFormik({
     initialValues: {
       name: '',
     },
-    validationSchema,
-    validateOnChange: false,
-    validateOnBlur: true,
-    onSubmit: async (values, { resetForm, setSubmitting }) => {
-      
+    onSubmit: async (values, { setSubmitting }) => {
       setSubmitAttempted(true)
-      const isValid = await formik.validateForm()
-      if (!isValid) return
+      
+      await formik.validateForm()
+      
+      if (Object.keys(formik.errors).length > 0) {
+        setSubmitting(false)
+        return
+      }
 
       try {
-        const response = await addChannel(values.name.trim())
-        dispatch(setCurrentChannelId(response.data.id))
-        setSubmitting(false)
-        resetForm()
+        const response = await addChannel(values.name.trim()).unwrap()
+        dispatch(setCurrentChannelId(response.id))
+        toastSuccess(t('toast.channelAdd'))
         onHide()
       } catch (error) {
         setSubmitting(false)
-        console.error('Ошибка при добавлении канала:', error)
+        console.error('Ошибка:', error)
+        toastError(error.data?.message || t('toast.error'))
       }
     },
+    validationSchema: validationSchema,
+    validateOnChange: false,
   })
 
   const inputRef = useRef()
 
   useEffect(() => {
-    inputRef.current.focus()
+    inputRef.current?.focus()
   }, [])
 
-  const showError = (fieldName) => {
-    return (formik.touched[fieldName] || submitAttempted) && formik.errors[fieldName]
+  const shouldShowError = (fieldName) => {
+
+    if (!formik.errors || !formik.errors[fieldName]) {
+      return false
+    }
+
+    return (formik.touched[fieldName] || submitAttempted)
+  }
+
+  const handleCancel = () => {
+    if (!isAdding) {
+      onHide()
+    }
   }
 
   return (
-    <Modal show>
-      <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t('channel.addChannel')}</Modal.Title>
+    <Modal show onHide={handleCancel}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t('channel.header')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} noValidate>
           <FormGroup>
             <FormControl 
-              required
               ref={inputRef}
-              onBlur={formik.handleBlur}
+              name="name"
+              placeholder={formik.onChange}
               value={formik.values.name}
               onChange={formik.handleChange}
-              isInvalid={showError('name')}
-              name='name'
+              isInvalid={formik.errors.name && formik.touched.name}
+              disabled={isAdding}
             />
-            {showError('name') && (
-             <FormControl.Feedback type="invalid" id="channelError">
-              {formik.errors.name}
-             </FormControl.Feedback> 
+            {formik.errors.name && formik.touched.name && (
+              <div className="invalid-feedback">{formik.errors.name}</div>
             )}
           </FormGroup>
-          <div id="invalidChannel" className="invalid-feedback text-danger mt-2">
-            {formik.errors?.name}
-          </div>
-          <div className="d-flex justify-content-end gap-2 mt-3">
+          
+          <div className="d-flex justify-content-end gap-2 mt-4">
             <Button
               variant="secondary"
-              onClick={onHide}
-              disabled={isLoading}
-            >{t('modals.cancel')}</Button>
+              onClick={handleCancel}
+              disabled={isAdding}
+            >
+              {t('modals.cancel')}
+            </Button>
             <Button
               type="submit"
               variant="primary"
-              disabled={isLoading}
-            >{t('modals.send')}</Button>
+              disabled={isAdding}
+            >
+              {isAdding ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    className="me-2"
+                  />
+                  {t('common.adding')}
+                </>
+              ) : (
+                t('modals.send')
+              )}
+            </Button>
           </div>
         </form>
       </Modal.Body>

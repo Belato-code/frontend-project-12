@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react"
 import { Modal, Button } from "react-bootstrap"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentChannelId } from "../../../store/slices/uiSlice"
-import { useDeleteChannelMutation, useGetMessagesQuery } from "../../../store/api/baseApi"
+import { useDeleteChannelMutation } from "../../../store/api/baseApi"
+import { useToast } from "../../../hooks/useToast"
 
 
 const Remove = ({ onHide, channels }) => {
@@ -11,6 +11,7 @@ const Remove = ({ onHide, channels }) => {
   const [deleteChannel, { isLoading }] = useDeleteChannelMutation()
   const dispatch = useDispatch()
   const modal = useSelector(state => state.ui.modal)
+  const { toastError, toastSuccess } = useToast()
 
   const handleSubmit = async (e) => {
     const id = modal.id
@@ -19,8 +20,9 @@ const Remove = ({ onHide, channels }) => {
       await deleteChannel(id)
       dispatch(setCurrentChannelId(channels[0].id))
       onHide()
+      toastSuccess(t('toast.channelRemove'))
     } catch (error) {
-      console.error(error)
+      toastError(t('toast.error'))
     }
   }
 

@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react"
 import { useTranslation } from "react-i18next"
+import LeoProfanity from 'leo-profanity'
 
 export const MessagesList = ({ messages}) => {
   const { t } = useTranslation()
@@ -22,7 +23,7 @@ export const MessagesList = ({ messages}) => {
           <div key={message.id || message.timestamp} className="mb-2">
             <div>
               <strong>{message.username}: </strong>
-              {message.body}
+              {LeoProfanity.clean(message.body)}
             </div>
           </div>
         ))

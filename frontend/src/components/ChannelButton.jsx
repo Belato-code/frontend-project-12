@@ -1,10 +1,10 @@
 import { Dropdown, Button, ButtonGroup } from "react-bootstrap"
 import classNames from 'classnames'
 import { useTranslation } from "react-i18next"
-import { renderModal } from "./ChatPage"
 import { setOpen } from "../store/slices/uiSlice"
 import store from "../store"
 import { useDispatch } from "react-redux"
+import LeoProfanity from 'leo-profanity'
 
 export const ChannelButton = ({ channel, isSelected, onSelect }) => {
 
@@ -46,7 +46,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           className={btnClass}
           onClick={handleSelectChannel}
         >
-          # {channel.name}
+          # {LeoProfanity.clean(channel.name)}
         </Button>
         <Dropdown.Toggle
           split
@@ -75,7 +75,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
       className={btnClass}
       onClick={handleSelectChannel}
     >
-      # {channel.name}
+      # {LeoProfanity.clean(channel.name)}
     </Button>
   )
 }

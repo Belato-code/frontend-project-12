@@ -1,7 +1,6 @@
 import { Button, InputGroup, Form } from "react-bootstrap"
 import { useFormik } from "formik"
 import { useRef, useEffect } from "react"
-import { useSocket } from "../../../contexts/socket"
 import { useAddMessageMutation } from "../../../store/api/baseApi"
 import { useTranslation } from "react-i18next"
 
@@ -9,9 +8,7 @@ export const MessageForm = ({ selectedChannelId }) => {
   const inputRef = useRef(null)
   const [addMessage, { isLoading }] = useAddMessageMutation()
   const { t } = useTranslation()
-  
-  const { socket } = useSocket()
-  
+    
   const username = localStorage.getItem('username')
 
   const formik = useFormik({

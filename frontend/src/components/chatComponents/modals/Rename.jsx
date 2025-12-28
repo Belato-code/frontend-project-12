@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentChannelId } from "../../../store/slices/uiSlice"
+import { useToast } from "../../../hooks/useToast"
 
 
 const Rename = ({ onHide }) => {
@@ -15,6 +16,7 @@ const Rename = ({ onHide }) => {
   const dispatch = useDispatch()
   const [submitAttempted, setSubmitAttempted] = useState(false)
   const modal = useSelector(state => state.ui.modal)
+  const { toastError, toastSuccess } = useToast()
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -47,9 +49,10 @@ const Rename = ({ onHide }) => {
         setSubmitting(false)
         resetForm()
         onHide()
+        toastSuccess(t('toast.channelRename'))
       } catch (error) {
         setSubmitting(false)
-        console.error('Ошибка при добавлении канала:', error)
+        toastError(t('toast.error'))
       }
     },
   })

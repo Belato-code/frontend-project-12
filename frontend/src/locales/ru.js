@@ -59,12 +59,20 @@ export default {
       required: 'Обязательное поле!',
       channelIsExist: 'Канал уже существует!',
       confirm: 'Пароли должны совпадать',
-      minPas: 'Минимум 6 символов'
+      minPas: 'Минимум 6 символов',
+      usernameTaken: 'Такой пользователь уже существует'
       
     },
     modals: {
       cancel: 'Отменить',
       send: 'Отправить',
-    }
-  }
+    },
+    toast: {
+      error: 'Ошибка',
+      networkError: 'Ошибка соединения',
+      channelAdd: 'Канал создан',
+      channelRemove: 'Канал удалён',
+      channelRename: 'Канал переименован',
+    },
+  },
 }

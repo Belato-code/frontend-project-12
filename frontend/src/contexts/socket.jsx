@@ -65,8 +65,6 @@ export const SocketProvider = ({ children }) => {
         })
 
         newSocket.on('newChannel', (newChannel) => {
-          console.log('📢 newChannel via WebSocket:', newChannel)
-          
           store.dispatch(
             baseApi.util.updateQueryData(
               'getChannels',
@@ -96,8 +94,6 @@ export const SocketProvider = ({ children }) => {
         })
 
         newSocket.on('renameChannel', (updatedChannel) => {
-          console.log('✏️ renameChannel via WebSocket:', updatedChannel)
-          
           store.dispatch(
             baseApi.util.updateQueryData(
               'getChannels',
@@ -113,8 +109,6 @@ export const SocketProvider = ({ children }) => {
         })
 
       newSocket.on('newMessage', (newMessage) => {
-          console.log('📨 newMessage via WebSocket:', newMessage)
-          
           store.dispatch(
             baseApi.util.updateQueryData(
               'getMessages',

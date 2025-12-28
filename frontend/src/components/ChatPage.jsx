@@ -9,6 +9,7 @@ import { MessagesList } from "./chatComponents/messages/MessagesList"
 import { useSocket } from "../contexts/socket"
 import { useTranslation } from 'react-i18next'
 import getModal from './chatComponents/modals/index'
+import { ToastContainer, toast } from 'react-toastify'
 import { setClose, setCurrentChannelId, setOpen } from "../store/slices/uiSlice"
 
 export const renderModal = ({ modalInfo, hideModal, channels }) => {
@@ -60,6 +61,18 @@ export const ChatPage = () => {
   
   return (
     <Container className="mt-4 overflow-hidden vh-80">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Row className="h-100">
         <Col xs="3" className="h-100 d-inline-block p-0 bg-secondary-subtle border border-dark-subtle">
           <div className="channels h-100 d-flex flex-column">
