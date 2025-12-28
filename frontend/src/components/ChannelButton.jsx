@@ -47,7 +47,8 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           type="button"
           onClick={handleSelectChannel}
         >
-          # {LeoProfanity.clean(channel.name)}
+          <span className="me-1">#</span>
+          {LeoProfanity.clean(channel.name)}
         </Button>
         <Dropdown.Toggle
           split
@@ -77,7 +78,8 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
       onClick={handleSelectChannel}
       type="button"
     >
-      # {LeoProfanity.clean(channel.name)}
+      <span className="me-1">#</span>
+      {LeoProfanity.clean(channel.name)}
     </Button>
   )
 }
