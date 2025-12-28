@@ -93,6 +93,7 @@ export const SignUpPage = () => {
                 <Form onSubmit={formik.handleSubmit} noValidate>
                   <h1 className="text-center mb-3">{t('signUpPage.header')}</h1>
                   <Form.Group className="mb-3">
+                    <Form.Label htmlFor="username">{t('signUpPage.name')}</Form.Label>
                     <Form.Control
                       type="text"
                       onChange={formik.handleChange}
@@ -112,6 +113,7 @@ export const SignUpPage = () => {
                     )}
                   </Form.Group>
                   <Form.Group className="mb-3">
+                    <Form.Label htmlFor="password">{t('signUpPage.password')}</Form.Label>
                     <Form.Control
                       type="password"
                       onChange={formik.handleChange}
@@ -130,6 +132,7 @@ export const SignUpPage = () => {
                     )}
                   </Form.Group>
                   <Form.Group className="mb-3">
+                    <Form.Label htmlFor="confirmPassword">{t('signUpPage.confirmPassword')}</Form.Label>
                     <Form.Control
                       type="password"
                       onChange={formik.handleChange}
