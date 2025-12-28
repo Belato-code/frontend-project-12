@@ -56,6 +56,7 @@ export const LoginPage = () => {
                 <Form onSubmit={formik.handleSubmit}>
                   <h1 className="text-center">{t('logInPage.header')}</h1>
                   <Form.Group className="mb-3">
+                    <Form.Label htmlFor="username" className="visually-hidden">{t('logInPage.name')}</Form.Label>
                     <Form.Control
                       type="text"
                       onChange={formik.handleChange}
@@ -68,13 +69,14 @@ export const LoginPage = () => {
                     />
                   </Form.Group>
                   <Form.Group className="mb-3">
+                    <Form.Label htmlFor="password" className="visually-hidden">{t('logInPage.password')}</Form.Label>
                     <Form.Control
                       type="password"
                       onChange={formik.handleChange}
                       value={formik.values.password}
                       placeholder={t('logInPage.password')}
                       name="password"
-                      id="Password"
+                      id="password"
                       required
                     />
                   </Form.Group>
