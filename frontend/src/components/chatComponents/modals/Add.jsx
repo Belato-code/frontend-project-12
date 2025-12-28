@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next"
 import { useDispatch } from "react-redux"
 import { setCurrentChannelId } from "../../../store/slices/uiSlice"
 import { useToast } from "../../../hooks/useToast"
+import LeoProfanity from 'leo-profanity'
 
 const Add = ({ onHide }) => {
   const [addChannel, { isLoading: isAdding }] = useAddChannelMutation()
@@ -45,7 +46,7 @@ const Add = ({ onHide }) => {
       }
 
       try {
-        const cleanName = values.name.trim()
+        const cleanName = LeoProfanity.clean(values.name.trim())
         const response = await addChannel(cleanName).unwrap()
         dispatch(setCurrentChannelId(response.id))
         toastSuccess(t('toast.channelAdd'))
