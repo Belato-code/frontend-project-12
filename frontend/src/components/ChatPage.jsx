@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import getModal from './chatComponents/modals/index'
 import { ToastContainer } from 'react-toastify'
 import { setClose, setCurrentChannelId, setOpen } from "../store/slices/uiSlice"
+import LeoProfanity from 'leo-profanity'
 
 export const renderModal = ({ modalInfo, hideModal, channels }) => {
   if (!modalInfo?.type) return null
@@ -100,7 +101,7 @@ export const ChatPage = () => {
           <div className="h-100 d-flex flex-column justify-content-between">
             <div className="header bg-secondary-subtle p-3 shadow-sm">
               <span className="fs-5 fw-bold text-warning-emphasis">
-                # {selectedChannel?.name || 'Выберите канал'}
+                # {LeoProfanity.clean(selectedChannel?.name) || 'Выберите канал'}
               </span>
               <div id="counter" className="mt-2">
                 {filteredMessages.length} {t('chatPage.messages.mes', {count: filteredMessages.length})}
