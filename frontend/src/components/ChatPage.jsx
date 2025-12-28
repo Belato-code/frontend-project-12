@@ -9,7 +9,7 @@ import { MessagesList } from "./chatComponents/messages/MessagesList"
 import { useSocket } from "../contexts/socket"
 import { useTranslation } from 'react-i18next'
 import getModal from './chatComponents/modals/index'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import { setClose, setCurrentChannelId, setOpen } from "../store/slices/uiSlice"
 
 export const renderModal = ({ modalInfo, hideModal, channels }) => {

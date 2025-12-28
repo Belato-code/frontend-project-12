@@ -4,11 +4,13 @@ import { Spinner } from "react-bootstrap"
 import { useGetChannelsQuery } from '../store/api/baseApi'
 import { setCurrentChannelId } from '../store/slices/uiSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from "react-i18next"
 
 export const Channels = () => {
   const dispatch = useDispatch()
   const { data: channels = [], error, isLoading, isError } = useGetChannelsQuery()
   const endRef = useRef()
+  const { t } = useTranslation()
 
   const currentChannelId = useSelector(state => state.ui.currentChannelId)
 

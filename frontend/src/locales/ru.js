@@ -35,7 +35,8 @@ export default {
       confirm: 'Уверены?',
       error: {
         loading: 'Не удалось загрузить каналы:',
-        exist: 'Канал с таким именем уже существует!'
+        exist: 'Канал с таким именем уже существует!',
+        unknown: 'unknown',
       },
     },
     logInPage: {

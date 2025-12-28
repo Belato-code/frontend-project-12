@@ -4,6 +4,14 @@ import ru from './locales/ru'
 import { Provider } from 'react-redux'
 import store from './store'
 import App from './components/App'
+import { Provider as RollbarProvider, ErrorBoundary} from '@rollbar/react'
+
+const rollbarConfig = {
+  accessToken: '2228edeacf834b8bbae3b902193964b3',
+  environment: 'testenv',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+}
 
 const init = async () => {
   const i18n = i18next.createInstance()
@@ -14,12 +22,15 @@ const init = async () => {
   })
 
   return (
-
+    <RollbarProvider config={rollbarConfig}>
       <I18nextProvider i18n={i18n}>
         <Provider store={store}>
+          <ErrorBoundary>
             <App />
+          </ErrorBoundary>
         </Provider>
       </I18nextProvider>
+    </RollbarProvider>
   )
 }
 

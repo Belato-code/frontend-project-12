@@ -10,6 +10,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
 
   const dispatch = useDispatch()
   const id = channel.id
+  const { t } = useTranslation()
   
   const handleRemove = () => {
     dispatch(setOpen({ type: 'removing', id }))
@@ -19,7 +20,6 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
     dispatch(setOpen({ type: 'renaming', id }))
     console.log(store.getState('ui'), channel.id)
   }
-  const { t } = useTranslation()
   const btnClass = classNames([
     'fs-5',
     'mt-1',

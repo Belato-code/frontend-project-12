@@ -17,7 +17,6 @@ import useAuth from '../hooks'
 import { SocketProvider } from '../contexts/socket.jsx'
 import { useTranslation } from 'react-i18next'
 import routes from '../routes.js'
-import { ToastContainer } from 'react-toastify'
 
 const AuthProvider = ({ children }) => {
 
