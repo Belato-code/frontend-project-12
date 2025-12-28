@@ -25,11 +25,16 @@ export default {
       signUp: 'Регистрация',
     },
     channel: {
+      addChannel: 'Добавить канал',
+      deleteChannel: 'Удалить канал',
+      renameChannel: 'Переименовать канал',
+      header: 'Каналы',
       rename: 'Переименовать',
       delete: 'Удалить',
+      confirm: 'Уверены?',
       error: {
-        unknown: 'Неизвестная ошибка',
         loading: 'Не удалось загрузить каналы:',
+        exist: 'Канал с таким именем уже существует!'
       },
     },
     logInPage: {
@@ -40,5 +45,26 @@ export default {
       linkPrefix: 'Нет аккаунта?',
       link: 'Регистрация',
     },
+    signUpPage: {
+      header: 'Регистрация',
+      name: 'Ваш ник',
+      password: 'Пароль',
+      confirmPassword: 'Подтвердите пароль',
+      button: 'Зарегистрироваться',
+    },
+    validation: {
+      signUp: 'От 3 до 20 символов',
+      min: 'Название должно быть не менее 3 символов!',
+      max: 'Название должно быть не более 20 символов!',
+      required: 'Обязательное поле!',
+      channelIsExist: 'Канал уже существует!',
+      confirm: 'Пароли должны совпадать',
+      minPas: 'Минимум 6 символов'
+      
+    },
+    modals: {
+      cancel: 'Отменить',
+      send: 'Отправить',
+    }
   }
 }

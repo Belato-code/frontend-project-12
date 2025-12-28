@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next"
 
 export const MessageForm = ({ selectedChannelId }) => {
   const inputRef = useRef(null)
-  const [addMessage] = useAddMessageMutation()
+  const [addMessage, { isLoading }] = useAddMessageMutation()
   const { t } = useTranslation()
   
   const { socket } = useSocket()
@@ -50,7 +50,7 @@ export const MessageForm = ({ selectedChannelId }) => {
   }, [selectedChannelId])
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
+    <Form onSubmit={formik.handleSubmit} className='mb-3 px-3'>
       <InputGroup className="mb-1 px-2">
         <Form.Control
           placeholder={t('chatPage.placeholder')}
@@ -67,7 +67,7 @@ export const MessageForm = ({ selectedChannelId }) => {
         <Button
           variant="outline-secondary"
           type="submit"
-          disabled={!socket?.connected}
+          disabled={isLoading}
         >
           <svg width="30" height="30" viewBox="0 0 490.939 490.939" fill="currentColor">
             <path d="M41.552,490.939c-2.665,0-5.297-1.064-7.237-3.095c-3.185-3.337-3.675-8.419-1.186-12.303L181.221,244.52L33.149,15.43

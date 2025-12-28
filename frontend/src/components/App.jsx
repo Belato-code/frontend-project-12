@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ChatPage } from './ChatPage'
 import { NotFound } from './404'
 import { LoginPage } from './LoginPage'
+import { SignUpPage } from './SignUpPage.jsx'
 import {
   BrowserRouter,
   Routes,
@@ -15,6 +16,7 @@ import {
 import useAuth from '../hooks'
 import { SocketProvider } from '../contexts/socket.jsx'
 import { useTranslation } from 'react-i18next'
+import routes from '../routes.js'
 
 const AuthProvider = ({ children }) => {
 
@@ -71,9 +73,10 @@ function App() {
             </Container>
           </Navbar>
           <Routes>
-            <Route path='*' element={<NotFound />} />
-            <Route path='login' element={<LoginPage />} />
-            <Route path='/' element={<ChatPage />} />
+            <Route path={routes.notFound()} element={<NotFound />} />
+            <Route path={routes.login()} element={<LoginPage />} />
+            <Route path={routes.chat()} element={<ChatPage />} />
+            <Route path={routes.signup()} element={<SignUpPage />} />
           </Routes>
         </BrowserRouter>
       </SocketProvider>

@@ -1,7 +1,15 @@
+import { useRef, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 
 export const MessagesList = ({ messages}) => {
   const { t } = useTranslation()
+  const endRef = useRef(null)
+
+  useEffect(() => {
+    if (endRef.current) {
+      endRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages])
 
   return (
     <div className="chat-messages overflow-auto px-5 ">
@@ -19,6 +27,7 @@ export const MessagesList = ({ messages}) => {
           </div>
         ))
       )}
+      <div ref={endRef} />
     </div>
   )
 }

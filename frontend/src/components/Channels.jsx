@@ -1,29 +1,36 @@
-import { useSelector, useDispatch } from "react-redux"
 import { useEffect, useRef } from "react"
 import { ChannelButton } from "./ChannelButton"
-import { useGetChannelsQuery } from "../store/api/baseApi"
 import { Spinner } from "react-bootstrap"
-import { actions as channelsActions } from "../store/slices/channelsSlice"
+import { useGetChannelsQuery } from '../store/api/baseApi'
+import { setCurrentChannelId } from '../store/slices/uiSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const Channels = () => {
-  const { setChannelId, addChannels } = channelsActions
   const dispatch = useDispatch()
   const { data: channels = [], error, isLoading, isError } = useGetChannelsQuery()
-  const currentChannelId = useSelector(state => state.channels.currentChannelId)
-  useSelector(console.log)
+  const endRef = useRef()
+
+  const currentChannelId = useSelector(state => state.ui.currentChannelId)
 
   useEffect(() => {
-    if (channels.length > 0) {
-      dispatch(addChannels(channels))
-    }
-    if (currentChannelId === null || currentChannelId === undefined) {
-      dispatch(setChannelId(channels[0]?.id ))
+    if (channels.length > 0 && !currentChannelId) {
+      dispatch(setCurrentChannelId(channels[0].id))
     }
   }, [channels, currentChannelId, dispatch])
+  
+  const handleChannelSelect = (channelId) => {
+    dispatch(setCurrentChannelId(channelId))
+  }
+
+  useEffect(() => {
+    if (endRef.current) {
+      endRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [channels])
 
   if (isLoading) {
     return (
-      <div className="channels-box flex-column px-2 mb-3 list-unstyled" id="channels-box">
+      <div className="text-center">
         <Spinner />
       </div>
     )
@@ -38,21 +45,24 @@ export const Channels = () => {
       </div>
     )
   }
-
-  const handleChannelSelect = (channelId) => {
-    dispatch(setChannelId(channelId))
-  }
-
+  
   return (
-    <div className="channels-box flex-column px-2 mb-3 list-unstyled" id="channels-box">
-      {channels.map((channel) => (
-        <ChannelButton
-          key={channel.id}
-          channel={channel}
-          isSelected={currentChannelId === channel.id}
-          onSelect={ handleChannelSelect }
-        />
-      ))}
+    <div className="h-100 d-flex flex-column">
+      <ul 
+        className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+        id="channels-box"
+      >
+        {channels.map((channel) => (
+          <li key={channel.id} className="nav-item w-100">
+            <ChannelButton
+              channel={channel}
+              isSelected={currentChannelId === channel.id}
+              onSelect={handleChannelSelect}
+            />
+          </li>
+        ))}
+        <div ref={endRef} />
+      </ul>
     </div>
   )
 }
