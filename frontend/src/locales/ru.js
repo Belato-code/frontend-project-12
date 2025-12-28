@@ -3,6 +3,7 @@ export default {
     invalidAuth: 'Неверные имя пользователя или пароль',
     message_input: 'Новое сообщение',
     channelName: 'Имя канала',
+    channelControl: 'Управление каналом',
     chatPage: {
       messages:{
         mes_one: 'Сообщение',

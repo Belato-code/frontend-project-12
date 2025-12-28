@@ -56,7 +56,9 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           variant={isSelected ? 'secondary' : 'light'}
           id="dropdown-custom-2"
           className='border-0 mt-1'
-        />
+        >
+          <span className="visually-hidden">{t('channelControl')}</span>
+        </Dropdown.Toggle>
         <Dropdown.Menu className="options">
           <Dropdown.Item
             data-rename-id={channel.id}
