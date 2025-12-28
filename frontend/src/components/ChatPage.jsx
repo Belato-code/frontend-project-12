@@ -41,7 +41,6 @@ export const ChatPage = () => {
   }
   const { socket } = useSocket()
 
-
   useEffect(() => {
     if (!token) {
       navigate('/login')

@@ -45,11 +45,10 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           variant={isSelected ? 'secondary' : 'light'}
           className={btnClass}
           type="button"
-          name={channel.name}
           aria-label={channel.name}
           onClick={handleSelectChannel}
         >
-          <span className="me-1">#</span>
+          <span className="me-1" aria-hidden="true">#</span>
           {LeoProfanity.clean(channel.name)}
         </Button>
         <Dropdown.Toggle
@@ -80,9 +79,8 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
       onClick={handleSelectChannel}
       type="button"
       aria-label={channel.name}
-      name={channel.name}
     >
-      <span className="me-1">#</span>
+      <span className="me-1" aria-hidden="true">#</span>
       {LeoProfanity.clean(channel.name)}
     </Button>
   )
