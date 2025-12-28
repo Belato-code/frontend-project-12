@@ -24,13 +24,13 @@ const init = async () => {
 
   return (
     <RollbarProvider config={rollbarConfig}>
-      <ErrorBoundary>
-        <I18nextProvider i18n={i18n}>
-          <Provider store={store}>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <ErrorBoundary>
             <App />
-          </Provider>
-        </I18nextProvider>
-      </ErrorBoundary>
+          </ErrorBoundary>
+        </Provider>
+      </I18nextProvider>
     </RollbarProvider>
   )
 }
