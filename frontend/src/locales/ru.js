@@ -39,7 +39,7 @@ export default {
     },
     logInPage: {
       header: 'Вход',
-      name: 'Ваш ник',
+      name: 'Имя пользователя',
       password: 'Пароль',
       button: 'Войти',
       linkPrefix: 'Нет аккаунта?',
