@@ -65,15 +65,6 @@ const Add = ({ onHide }) => {
     inputRef.current?.focus()
   }, [])
 
-  const shouldShowError = (fieldName) => {
-
-    if (!formik.errors || !formik.errors[fieldName]) {
-      return false
-    }
-
-    return (formik.touched[fieldName] || submitAttempted)
-  }
-
   const handleCancel = () => {
     if (!isAdding) {
       onHide()
@@ -88,9 +79,11 @@ const Add = ({ onHide }) => {
       <Modal.Body>
         <form onSubmit={formik.handleSubmit} noValidate>
           <FormGroup>
+            <label htmlFor="name" className="visually-hidden">{t('channelName')}</label>
             <FormControl 
               ref={inputRef}
               name="name"
+              id="name"
               placeholder={formik.onChange}
               value={formik.values.name}
               onChange={formik.handleChange}

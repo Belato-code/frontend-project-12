@@ -75,6 +75,7 @@ const Rename = ({ onHide }) => {
       <Modal.Body>
         <form onSubmit={formik.handleSubmit}>
           <FormGroup>
+            <label htmlFor="name" className="visually-hidden">{t('channelName')}</label>
             <FormControl 
               required
               ref={inputRef}
@@ -83,6 +84,7 @@ const Rename = ({ onHide }) => {
               onChange={formik.handleChange}
               isInvalid={showError('name')}
               name='name'
+              id='name'
             />
             {showError('name') && (
              <FormControl.Feedback type="invalid" id="channelError">
