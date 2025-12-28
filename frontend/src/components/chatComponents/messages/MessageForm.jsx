@@ -51,7 +51,7 @@ export const MessageForm = ({ selectedChannelId }) => {
       <InputGroup className="mb-1 px-2">
         <Form.Control
           placeholder={t('chatPage.placeholder')}
-          aria-label="message_input"
+          aria-label={t('message_input')}
           name="body"
           ref={inputRef}
           value={formik.values.body}

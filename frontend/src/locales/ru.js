@@ -3,6 +3,7 @@ export default {
     key_one: 'sex',
     key_many: 'supper_sex',
     invalidAuth: 'Неверные имя пользователя или пароль',
+    message_input: 'Новое сообщение',
     chatPage: {
       messages:{
         mes_one: 'Сообщение',
