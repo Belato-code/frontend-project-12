@@ -79,9 +79,7 @@ export const SocketProvider = ({ children }) => {
           )
         })
 
-        newSocket.on('removeChannel', ({ id }) => {
-          console.log('🗑️ removeChannel via WebSocket:', id)
-          
+        newSocket.on('removeChannel', ({ id }) => {          
           store.dispatch(
             baseApi.util.updateQueryData(
               'getChannels',
@@ -108,17 +106,37 @@ export const SocketProvider = ({ children }) => {
           )
         })
 
-      newSocket.on('newMessage', (newMessage) => {
+      newSocket.on('newMessage', async (newMessage) => {
+        console.log('📩 WebSocket newMessage:', newMessage);
+        
+        try {
+
           store.dispatch(
             baseApi.util.updateQueryData(
               'getMessages',
               undefined,
-              (draft) => {
-                draft.push(newMessage)
+              (draft = []) => { 
+                const isDuplicate = draft.some(msg => 
+                  msg.id === newMessage.id || 
+                  (msg.body === newMessage.body && 
+                  msg.username === newMessage.username &&
+                  msg.channelId === newMessage.channelId)
+                )
+                
+                if (!isDuplicate) {
+                  console.log('✅ Добавляем в кэш:', newMessage.body)
+                  draft.push(newMessage)
+                }
               }
             )
           )
-        })
+
+          store.dispatch(baseApi.util.invalidateTags(['Message']))
+          
+        } catch (error) {
+          console.error('💥 Ошибка обновления кэша:', error)
+        }
+      })
 
       } catch (error) {
         console.error('💥 Ошибка инициализации сокета:', error)
