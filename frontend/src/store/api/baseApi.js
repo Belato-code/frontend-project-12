@@ -51,6 +51,7 @@ const baseApi = createApi({
         method: 'POST',
         body: message,
       }),
+      invalidatesTags: ['Message'],
     }),
     
     editChannel: builder.mutation({
