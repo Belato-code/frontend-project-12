@@ -44,7 +44,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
         <Button
           variant={isSelected ? 'secondary' : 'light'}
           className={btnClass}
-          role="button"
+          type="button"
           onClick={handleSelectChannel}
         >
           # {LeoProfanity.clean(channel.name)}
@@ -75,7 +75,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
       variant={isSelected ? 'secondary' : 'light'}
       className={btnClass}
       onClick={handleSelectChannel}
-      role="button"
+      type="button"
     >
       # {LeoProfanity.clean(channel.name)}
     </Button>
