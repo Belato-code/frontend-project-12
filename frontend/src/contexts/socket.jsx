@@ -39,9 +39,11 @@ export const SocketProvider = ({ children }) => {
         
         newSocket = io(baseUrl, {
           auth: { token: `Bearer ${token}` },
-          transports: ['websocket', 'polling'],
+          transports: ['websocket'],
           reconnection: true,
-          debug: true
+          reconnectionDelay: 100,
+          reconnectionDelayMax: 500,
+          timeout: 20000,
         })
 
         socketRef.current = newSocket
