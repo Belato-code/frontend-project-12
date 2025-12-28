@@ -46,6 +46,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           className={btnClass}
           type="button"
           name={channel.name}
+          aria-label={channel.name}
           onClick={handleSelectChannel}
         >
           <span className="me-1">#</span>
@@ -78,6 +79,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
       className={btnClass}
       onClick={handleSelectChannel}
       type="button"
+      aria-label={channel.name}
       name={channel.name}
     >
       <span className="me-1">#</span>

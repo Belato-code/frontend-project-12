@@ -1,7 +1,7 @@
 import { useFormik } from "formik"
 import loginImg from '../assets/login.jpg'
 import { Form, Button } from 'react-bootstrap'
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import routes from "../routes"
 import axios from 'axios'
 import useAuth from "../hooks"
@@ -13,6 +13,7 @@ export const LoginPage = () => {
   const auth = useAuth()
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const [authFailed, setAuthFailed] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -20,6 +21,7 @@ export const LoginPage = () => {
       password: '',
     },
     onSubmit: async (values) => {
+      setAuthFailed(false)
       try {
         const res = await axios.post(routes.loginPath(), values)
         const { token, username } = res.data
@@ -29,6 +31,7 @@ export const LoginPage = () => {
         navigate('/')
       }
       catch (err) {
+        setAuthFailed(true)
         formik.setSubmitting(false)
         if (err.isAxiosError && err.response.status === 401) {
           inputRef.current.select()
@@ -64,6 +67,7 @@ export const LoginPage = () => {
                       placeholder={t('logInPage.name')}
                       name="username"
                       id="username"
+                      isInvalid={authFailed}
                       required
                       ref={inputRef}
                     />
@@ -75,10 +79,12 @@ export const LoginPage = () => {
                       onChange={formik.handleChange}
                       value={formik.values.password}
                       placeholder={t('logInPage.password')}
+                      isInvalid={authFailed}
                       name="password"
                       id="password"
                       required
                     />
+                    <Form.Control.Feedback type="invalid" className="invalid-feedback">{t('invalidAuth')}</Form.Control.Feedback>
                   </Form.Group>
                   <Button variant="outline-primary" className="w-100" type="submit">{t('logInPage.button')}</Button>
                 </Form>

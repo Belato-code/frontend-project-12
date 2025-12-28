@@ -2,6 +2,7 @@ export default {
   translation: {
     key_one: 'sex',
     key_many: 'supper_sex',
+    invalidAuth: 'Неверные имя пользователя или пароль',
     chatPage: {
       messages:{
         mes_one: 'Сообщение',
