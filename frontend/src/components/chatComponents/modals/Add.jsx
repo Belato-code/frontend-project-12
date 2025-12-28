@@ -45,7 +45,8 @@ const Add = ({ onHide }) => {
       }
 
       try {
-        const response = await addChannel(values.name.trim()).unwrap()
+        const cleanName = values.name.trim()
+        const response = await addChannel(cleanName).unwrap()
         dispatch(setCurrentChannelId(response.id))
         toastSuccess(t('toast.channelAdd'))
         onHide()
