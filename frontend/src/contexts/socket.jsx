@@ -106,36 +106,17 @@ export const SocketProvider = ({ children }) => {
           )
         })
 
-      newSocket.on('newMessage', async (newMessage) => {
-        console.log('📩 WebSocket newMessage:', newMessage);
-        
-        try {
+      newSocket.on('newMessage', (newMessage) => {
 
-          store.dispatch(
-            baseApi.util.updateQueryData(
-              'getMessages',
-              undefined,
-              (draft = []) => { 
-                const isDuplicate = draft.some(msg => 
-                  msg.id === newMessage.id || 
-                  (msg.body === newMessage.body && 
-                  msg.username === newMessage.username &&
-                  msg.channelId === newMessage.channelId)
-                )
-                
-                if (!isDuplicate) {
-                  console.log('✅ Добавляем в кэш:', newMessage.body)
-                  draft.push(newMessage)
-                }
-              }
-            )
+        store.dispatch(
+          baseApi.util.updateQueryData(
+            'getMessages',
+            undefined,
+            (draft = []) => {
+              draft.push(newMessage)
+            }
           )
-
-          store.dispatch(baseApi.util.invalidateTags(['Message']))
-          
-        } catch (error) {
-          console.error('💥 Ошибка обновления кэша:', error)
-        }
+        )
       })
 
       } catch (error) {
