@@ -107,7 +107,7 @@ export const ChatPage = () => {
               </div>
             </div>
             <div className="flex-grow-1 overflow-auto">
-              <MessagesList messages={filteredMessages} />
+              <MessagesList messages={filteredMessages} currentChannelId={currentChannelId} />
             </div>
             
             <MessageForm 

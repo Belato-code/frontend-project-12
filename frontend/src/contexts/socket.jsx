@@ -117,6 +117,7 @@ export const SocketProvider = ({ children }) => {
             }
           )
         )
+        store.dispatch(baseApi.util.invalidateTags(['Message']))
       })
 
       } catch (error) {

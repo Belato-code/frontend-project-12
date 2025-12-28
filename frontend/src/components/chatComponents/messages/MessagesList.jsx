@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import LeoProfanity from 'leo-profanity'
 
-export const MessagesList = ({ messages}) => {
+export const MessagesList = ({ messages, currentChannelId }) => {
   const { t } = useTranslation()
   const endRef = useRef(null)
 
@@ -10,7 +10,7 @@ export const MessagesList = ({ messages}) => {
     if (endRef.current) {
       endRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages])
+  }, [messages, currentChannelId])
 
   return (
     <div className="chat-messages overflow-auto px-5 ">
