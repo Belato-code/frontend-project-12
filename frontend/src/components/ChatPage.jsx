@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { Container, Row, Col } from "react-bootstrap"
 import { useGetChannelsQuery, useGetMessagesQuery } from '../store/api/baseApi'
 import { Channels } from "./Channels"
@@ -54,7 +54,7 @@ export const ChatPage = () => {
     }
   }, [channels, currentChannelId, dispatch])
 
-  const filteredMessages = messages.filter(m => m.channelId === currentChannelId)
+  const filteredMessages = useMemo(() => messages.filter(m => m.channelId === currentChannelId), [messages, currentChannelId])
   
   const selectedChannel = channels.find(ch => ch.id === currentChannelId)
   

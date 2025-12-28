@@ -107,7 +107,6 @@ export const SocketProvider = ({ children }) => {
         })
 
       newSocket.on('newMessage', (newMessage) => {
-
         store.dispatch(
           baseApi.util.updateQueryData(
             'getMessages',
