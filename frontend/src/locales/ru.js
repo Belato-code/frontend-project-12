@@ -47,7 +47,7 @@ export default {
     },
     signUpPage: {
       header: 'Регистрация',
-      name: 'Ваш ник',
+      name: 'Имя пользователя',
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
       button: 'Зарегистрироваться',
