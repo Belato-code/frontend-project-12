@@ -74,7 +74,7 @@ const Add = ({ onHide }) => {
   return (
     <Modal show onHide={handleCancel}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('channel.header')}</Modal.Title>
+        <Modal.Title>{t('channel.addChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={formik.handleSubmit} noValidate>
