@@ -10,7 +10,7 @@ const app = async () => {
   root.render(
     <React.StrictMode>
       {vdom}
-    </React.StrictMode>
+    </React.StrictMode>,
   )
 }
 
