@@ -1,4 +1,3 @@
-import process from 'node/process'
 const apiPath = '/api/v1'
 
 export default {
