@@ -27,4 +27,3 @@ export const useToast = () => {
 
   return { toastError, toastSuccess, toast }
 }
-

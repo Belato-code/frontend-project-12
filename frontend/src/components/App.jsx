@@ -48,25 +48,25 @@ const AuthButton = () => {
   return (
     auth.loggedIn
       ? (
-        <>
-          <div className="me-2 text-warning-emphasis fs-4 navbar-text">
-            {localStorage.getItem('username')}
-          </div>
-          <Button onClick={handleLogOut}>
-            {t('navbar.logOut')}
-          </Button>
-        </>
-      )
-      : (
-        <>
-          <Button as={Link} to="/login" state={{ from: location }} className='me-1' variant="outline-primary">
-            {t('navbar.logIn')}
-          </Button>
-          <Button as={Link} to="/signup" state={{ from: location }} className='ms-1' variant="outline-primary">
-            {t('navbar.signUp')}
-          </Button>
-        </>
-      )
+          <>
+            <div className="me-2 text-warning-emphasis fs-4 navbar-text">
+              {localStorage.getItem('username')}
+            </div>
+            <Button onClick={handleLogOut}>
+              {t('navbar.logOut')}
+            </Button>
+          </>
+        )
+        : (
+          <>
+            <Button as={Link} to="/login" state={{ from: location }} className="me-1" variant="outline-primary">
+              {t('navbar.logIn')}
+            </Button>
+            <Button as={Link} to="/signup" state={{ from: location }} className="ms-1" variant="outline-primary">
+              {t('navbar.signUp')}
+            </Button>
+          </>
+        )
   )
 }
 
@@ -76,12 +76,12 @@ function App() {
     <AuthProvider>
       <SocketProvider>
         <BrowserRouter>
-          <Navbar bg='secondary-subtle' expand='lg'>
+          <Navbar bg="secondary-subtle" expand="lg">
             <Container>
-              <Navbar.Brand href='/' className='fw-bold text-warning-emphasis'>
+              <Navbar.Brand href="/" className="fw-bold text-warning-emphasis">
                 {t('navbar.name')}
               </Navbar.Brand>
-              <Navbar.Collapse className='justify-content-end'>
+              <Navbar.Collapse className="justify-content-end">
                 <AuthButton />
               </Navbar.Collapse>
             </Container>

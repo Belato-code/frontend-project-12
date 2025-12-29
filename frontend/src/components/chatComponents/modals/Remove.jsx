@@ -5,12 +5,11 @@ import { setCurrentChannelId } from '../../../store/slices/uiSlice'
 import { useDeleteChannelMutation } from '../../../store/api/baseApi'
 import { useToast } from '../../../hooks/useToast'
 
-
 const Remove = ({ onHide, channels }) => {
   const { t } = useTranslation()
   const [deleteChannel, { isLoading }] = useDeleteChannelMutation()
   const dispatch = useDispatch()
-  const modal = useSelector((state) => state.ui.modal)
+  const modal = useSelector(state => state.ui.modal)
   const { toastError, toastSuccess } = useToast()
 
   const handleSubmit = async (e) => {
@@ -21,7 +20,8 @@ const Remove = ({ onHide, channels }) => {
       dispatch(setCurrentChannelId(channels[0].id))
       onHide()
       toastSuccess(t('toast.channelRemove'))
-    } catch {
+    }
+    catch {
       toastError(t('toast.error'))
     }
   }

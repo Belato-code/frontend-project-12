@@ -4,7 +4,7 @@ import baseApi from './api/baseApi'
 
 const store = configureStore({
   reducer: {
-    [baseApi.reducerPath]:baseApi.reducer,
+    [baseApi.reducerPath]: baseApi.reducer,
     ui: uiReducer,
   },
   middleware: (getDefaultMiddleware) => {

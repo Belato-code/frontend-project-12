@@ -1,4 +1,4 @@
-
+import process from 'node/process'
 const apiPath = '/api/v1'
 
 export default {
@@ -10,5 +10,5 @@ export default {
   loginPath: () => [apiPath, 'login'].join('/'),
   channelsPath: () => [apiPath, 'channels'].join('/'),
   messagesPath: () => [apiPath, 'messages'].join('/'),
-  websocketUrl: () => process.env.REACT_APP_WS_URL || 'http://localhost:5001/',
+  websocketUrl: () => 'http://localhost:5001/',
 }

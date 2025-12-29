@@ -30,7 +30,6 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     const initSocket = async () => {
       try {
-
         const baseUrl = websocket(routes.websocketUrl())
 
         newSocket = io(baseUrl, {
@@ -66,7 +65,7 @@ export const SocketProvider = ({ children }) => {
               'getChannels',
               undefined,
               (draft) => {
-                const exists = draft.some((ch) => ch.id === newChannel.id)
+                const exists = draft.some(ch => ch.id === newChannel.id)
                 if (!exists) {
                   draft.push(newChannel)
                 }
@@ -81,7 +80,7 @@ export const SocketProvider = ({ children }) => {
               'getChannels',
               undefined,
               (draft) => {
-                return draft.filter((ch) => ch.id !== id)
+                return draft.filter(ch => ch.id !== id)
               },
             ),
           )
@@ -93,7 +92,7 @@ export const SocketProvider = ({ children }) => {
               'getChannels',
               undefined,
               (draft) => {
-                const index = draft.findIndex((ch) => ch.id === updatedChannel.id)
+                const index = draft.findIndex(ch => ch.id === updatedChannel.id)
                 if (index !== -1) {
                   draft[index] = updatedChannel
                 }
@@ -113,8 +112,8 @@ export const SocketProvider = ({ children }) => {
             ),
           )
         })
-
-      } catch (error) {
+      }
+      catch (error) {
         console.error('💥 Ошибка инициализации сокета:', error)
       }
     }

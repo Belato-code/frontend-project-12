@@ -29,7 +29,8 @@ export const LoginPage = () => {
         localStorage.setItem('username', username)
         auth.logIn()
         navigate('/')
-      } catch (err) {
+      }
+      catch (err) {
         setAuthFailed(true)
         formik.setSubmitting(false)
         if (err.isAxiosError && err.response.status === 401) {

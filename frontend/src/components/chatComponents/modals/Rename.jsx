@@ -8,14 +8,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentChannelId } from '../../../store/slices/uiSlice'
 import { useToast } from '../../../hooks/useToast'
 
-
 const Rename = ({ onHide }) => {
   const [renameChannel, { isLoading }] = useEditChannelMutation()
   const { data: channels } = useGetChannelsQuery()
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [submitAttempted, setSubmitAttempted] = useState(false)
-  const modal = useSelector((state) => state.ui.modal)
+  const modal = useSelector(state => state.ui.modal)
   const { toastError, toastSuccess } = useToast()
 
   const validationSchema = Yup.object({
@@ -23,8 +22,8 @@ const Rename = ({ onHide }) => {
       .min(3, t('validation.min'))
       .max(20, t('validation.max'))
       .required(t('validation.required'))
-      .test('unique', t('validation.channelIsExist'), (value) =>
-        !channels.some((ch) => ch.name.toLowerCase() === value?.toLocaleLowerCase()),
+      .test('unique', t('validation.channelIsExist'), value =>
+        !channels.some(ch => ch.name.toLowerCase() === value?.toLocaleLowerCase()),
       ),
   })
 
@@ -36,7 +35,6 @@ const Rename = ({ onHide }) => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: async (values, { resetForm, setSubmitting }) => {
-
       setSubmitAttempted(true)
       const isValid = await formik.validateForm()
       if (!isValid) return
@@ -50,7 +48,8 @@ const Rename = ({ onHide }) => {
         resetForm()
         onHide()
         toastSuccess(t('toast.channelRename'))
-      } catch {
+      }
+      catch {
         setSubmitting(false)
         toastError(t('toast.error'))
       }
@@ -87,8 +86,8 @@ const Rename = ({ onHide }) => {
               value={formik.values.name}
               onChange={formik.handleChange}
               isInvalid={showError('name')}
-              name='name'
-              id='name'
+              name="name"
+              id="name"
             />
             {showError('name') && (
               <FormControl.Feedback type="invalid" id="channelError">

@@ -14,7 +14,6 @@ const Add = ({ onHide }) => {
   const { data: channels = [] } = useGetChannelsQuery()
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const [submitAttempted, setSubmitAttempted] = useState(false)
   const { toastError, toastSuccess } = useToast()
 
   const validationSchema = Yup.object({
@@ -25,7 +24,7 @@ const Add = ({ onHide }) => {
       .required(t('validation.required'))
       .test('unique', t('validation.channelIsExist'), (value) => {
         if (!value) return true
-        return !channels.some((ch) =>
+        return !channels.some(ch =>
           ch.name.toLowerCase() === value.toLowerCase().trim(),
         )
       }),
@@ -36,8 +35,6 @@ const Add = ({ onHide }) => {
       name: '',
     },
     onSubmit: async (values, { setSubmitting }) => {
-      setSubmitAttempted(true)
-
       await formik.validateForm()
 
       if (Object.keys(formik.errors).length > 0) {
@@ -51,7 +48,8 @@ const Add = ({ onHide }) => {
         dispatch(setCurrentChannelId(response.id))
         toastSuccess(t('toast.channelAdd'))
         onHide()
-      } catch (error) {
+      }
+      catch (error) {
         setSubmitting(false)
         toastError(error.data?.message || t('toast.error'))
       }
@@ -117,21 +115,21 @@ const Add = ({ onHide }) => {
             >
               {isAdding
                 ? (
-                  <>
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                      className="me-2"
-                    />
-                    {t('common.adding')}
-                  </>
-                )
-                : (
-                  t('modals.send')
-                )}
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="me-2"
+                      />
+                      {t('common.adding')}
+                    </>
+                  )
+                  : (
+                    t('modals.send')
+                  )}
             </Button>
           </div>
         </form>

@@ -12,7 +12,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: '/api/v1',
   prepareHeaders: (headers) => {
     const authHeader = getAuthHeader()
-    if(authHeader.Authorization) {
+    if (authHeader.Authorization) {
       headers.set('Authorization', authHeader.Authorization)
     }
     headers.set('Content-Type', 'application/json')
@@ -24,7 +24,7 @@ const baseApi = createApi({
   reducerPath: 'api',
   baseQuery,
   tagTypes: ['Channel', 'Message'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getChannels: builder.query({
       query: () => '/channels',
       providesTags: ['Channel'],
@@ -36,7 +36,7 @@ const baseApi = createApi({
     }),
 
     addChannel: builder.mutation({
-      query: (channelName) => ({
+      query: channelName => ({
         url: '/channels',
         method: 'POST',
         body: { name: channelName },
@@ -45,7 +45,7 @@ const baseApi = createApi({
     }),
 
     addMessage: builder.mutation({
-      query: (message) => ({
+      query: message => ({
         url: '/messages',
         method: 'POST',
         body: message,
@@ -63,7 +63,7 @@ const baseApi = createApi({
     }),
 
     deleteChannel: builder.mutation({
-      query: (id) => ({
+      query: id => ({
         url: `/channels/${id}`,
         method: 'DELETE',
       }),

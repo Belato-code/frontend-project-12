@@ -7,9 +7,10 @@ import React from 'react'
 const app = async () => {
   const root = createRoot(document.getElementById('root'))
   const vdom = await init()
-  root.render(<React.StrictMode>
-    {vdom}
-  </React.StrictMode>)
+  root.render(
+    <React.StrictMode>
+      {vdom}
+    </React.StrictMode>)
 }
 
 app()

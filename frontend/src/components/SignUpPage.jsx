@@ -53,7 +53,8 @@ export const SignUpPage = () => {
         localStorage.setItem('username', username)
         auth.logIn()
         navigate('/')
-      } catch (err) {
+      }
+      catch (err) {
         formik.setSubmitting(false)
         if (err.isAxiosError && err.response.status === 401) {
           inputRef.current.select()

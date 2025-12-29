@@ -5,7 +5,7 @@ export default {
     channelName: 'Имя канала',
     channelControl: 'Управление каналом',
     chatPage: {
-      messages:{
+      messages: {
         mes_one: 'Сообщение',
         mes_few: 'Сообщения',
         mes_five: 'Сообщений',
