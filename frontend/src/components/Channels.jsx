@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react"
-import { ChannelButton } from "./ChannelButton"
-import { Spinner } from "react-bootstrap"
+import { useEffect, useRef } from 'react'
+import { ChannelButton } from './ChannelButton'
+import { Spinner } from 'react-bootstrap'
 import { useGetChannelsQuery } from '../store/api/baseApi'
 import { setCurrentChannelId } from '../store/slices/uiSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { useTranslation } from "react-i18next"
+import { useTranslation } from 'react-i18next'
 
 export const Channels = () => {
   const dispatch = useDispatch()
@@ -12,21 +12,21 @@ export const Channels = () => {
   const endRef = useRef()
   const { t } = useTranslation()
 
-  const currentChannelId = useSelector(state => state.ui.currentChannelId)
+  const currentChannelId = useSelector((state) => state.ui.currentChannelId)
 
   useEffect(() => {
     if (channels.length > 0 && !currentChannelId) {
       dispatch(setCurrentChannelId(channels[0].id))
     }
   }, [channels, currentChannelId, dispatch])
-  
+
   const handleChannelSelect = (channelId) => {
     dispatch(setCurrentChannelId(channelId))
   }
 
   useEffect(() => {
     if (endRef.current) {
-      endRef.current.scrollIntoView({ behavior: 'smooth' });
+      endRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [channels])
 
@@ -37,20 +37,22 @@ export const Channels = () => {
       </div>
     )
   }
-  
+
   if (isError) {
     return (
       <div className="channels-box flex-column px-2 mb-3 list-unstyled" id="channels-box">
         <div className="text-center py-3 text-danger">
-          {t('channel.error.loading')} {error?.message || t('channel.error.unknown')}
+          {t('channel.error.loading')}
+          {' '}
+          {error?.message || t('channel.error.unknown')}
         </div>
       </div>
     )
   }
-  
+
   return (
     <div className="h-100 d-flex flex-column">
-      <ul 
+      <ul
         className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
         id="channels-box"
       >

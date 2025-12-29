@@ -8,7 +8,7 @@ const uiSlice = createSlice({
       isOpen: false,
       id: null,
       type: null,
-    }
+    },
   },
   reducers: {
     setCurrentChannelId: (state, action) => {
@@ -28,7 +28,7 @@ const uiSlice = createSlice({
         id: null,
         type: null,
       }
-    }
+    },
   },
 })
 

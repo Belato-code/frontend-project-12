@@ -1,12 +1,12 @@
-import { useFormik } from "formik"
-import { useEffect, useRef, useState } from "react"
-import { FormGroup, FormControl, Modal, Button, Spinner } from "react-bootstrap"
-import { useAddChannelMutation, useGetChannelsQuery } from "../../../store/api/baseApi"
+import { useFormik } from 'formik'
+import { useEffect, useRef, useState } from 'react'
+import { FormGroup, FormControl, Modal, Button, Spinner } from 'react-bootstrap'
+import { useAddChannelMutation, useGetChannelsQuery } from '../../../store/api/baseApi'
 import * as Yup from 'yup'
-import { useTranslation } from "react-i18next"
-import { useDispatch } from "react-redux"
-import { setCurrentChannelId } from "../../../store/slices/uiSlice"
-import { useToast } from "../../../hooks/useToast"
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { setCurrentChannelId } from '../../../store/slices/uiSlice'
+import { useToast } from '../../../hooks/useToast'
 import LeoProfanity from 'leo-profanity'
 
 const Add = ({ onHide }) => {
@@ -25,8 +25,8 @@ const Add = ({ onHide }) => {
       .required(t('validation.required'))
       .test('unique', t('validation.channelIsExist'), (value) => {
         if (!value) return true
-        return !channels.some(ch => 
-          ch.name.toLowerCase() === value.toLowerCase().trim()
+        return !channels.some((ch) =>
+          ch.name.toLowerCase() === value.toLowerCase().trim(),
         )
       }),
   })
@@ -37,9 +37,9 @@ const Add = ({ onHide }) => {
     },
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitAttempted(true)
-      
+
       await formik.validateForm()
-      
+
       if (Object.keys(formik.errors).length > 0) {
         setSubmitting(false)
         return
@@ -76,13 +76,17 @@ const Add = ({ onHide }) => {
   return (
     <Modal show onHide={handleCancel}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('channel.addChannel')}</Modal.Title>
+        <Modal.Title>
+          {t('channel.addChannel')}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={formik.handleSubmit} noValidate>
           <FormGroup>
-            <label htmlFor="name" className="visually-hidden">{t('channelName')}</label>
-            <FormControl 
+            <label htmlFor="name" className="visually-hidden">
+              {t('channelName')}
+            </label>
+            <FormControl
               ref={inputRef}
               name="name"
               id="name"
@@ -93,10 +97,12 @@ const Add = ({ onHide }) => {
               disabled={isAdding}
             />
             {formik.errors.name && formik.touched.name && (
-              <div className="invalid-feedback">{formik.errors.name}</div>
+              <div className="invalid-feedback">
+                {formik.errors.name}
+              </div>
             )}
           </FormGroup>
-          
+
           <div className="d-flex justify-content-end gap-2 mt-4">
             <Button
               variant="secondary"
@@ -110,21 +116,23 @@ const Add = ({ onHide }) => {
               variant="primary"
               disabled={isAdding}
             >
-              {isAdding ? (
-                <>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    className="me-2"
-                  />
-                  {t('common.adding')}
-                </>
-              ) : (
-                t('modals.send')
-              )}
+              {isAdding
+                ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                    {t('common.adding')}
+                  </>
+                )
+                : (
+                  t('modals.send')
+                )}
             </Button>
           </div>
         </form>

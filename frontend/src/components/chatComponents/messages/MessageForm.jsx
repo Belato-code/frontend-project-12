@@ -1,14 +1,14 @@
-import { Button, InputGroup, Form } from "react-bootstrap"
-import { useFormik } from "formik"
-import { useRef, useEffect } from "react"
-import { useAddMessageMutation } from "../../../store/api/baseApi"
-import { useTranslation } from "react-i18next"
+import { Button, InputGroup, Form } from 'react-bootstrap'
+import { useFormik } from 'formik'
+import { useRef, useEffect } from 'react'
+import { useAddMessageMutation } from '../../../store/api/baseApi'
+import { useTranslation } from 'react-i18next'
 
 export const MessageForm = ({ selectedChannelId }) => {
   const inputRef = useRef(null)
   const [addMessage, { isLoading }] = useAddMessageMutation()
   const { t } = useTranslation()
-    
+
   const username = localStorage.getItem('username')
 
   const formik = useFormik({
@@ -16,23 +16,23 @@ export const MessageForm = ({ selectedChannelId }) => {
     onSubmit: async (values) => {
       const text = values.body.trim()
       if (!text || !selectedChannelId) return
-      
+
       try {
         await addMessage({
           body: text,
           channelId: selectedChannelId,
           username,
         }).unwrap()
-        
+
         console.log('✅ Сообщение отправлено через API')
         formik.resetForm()
       } catch (error) {
         console.error('💥 Ошибка:', error)
       }
-    }
+    },
   })
-      
-      
+
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()

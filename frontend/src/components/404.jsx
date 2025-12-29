@@ -1,5 +1,5 @@
-import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 export const NotFound = () => {
   const { t } = useTranslation()
@@ -7,12 +7,20 @@ export const NotFound = () => {
     <>
       <div className="not-found-page">
         <div className="animation-container">
-          <div className="ghost">👻</div>
+          <div className="ghost">
+            👻
+          </div>
         </div>
         <div className="text-content">
-          <h1>404</h1>
-          <h2>{t('404.subheader')}</h2>
-          <p>{t('404.paragraf')}</p>
+          <h1>
+            404
+          </h1>
+          <h2>
+            {t('404.subheader')}
+          </h2>
+          <p>
+            {t('404.paragraf')}
+          </p>
           <div className="actions">
             <Link to="/" className="btn btn-primary">
               {t('404.toHome')}

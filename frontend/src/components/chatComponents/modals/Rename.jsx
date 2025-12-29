@@ -1,12 +1,12 @@
-import { useFormik } from "formik"
-import { useEffect, useRef, useState } from "react"
-import { FormGroup, FormControl, Modal, Button } from "react-bootstrap"
-import { useEditChannelMutation, useGetChannelsQuery } from "../../../store/api/baseApi"
+import { useFormik } from 'formik'
+import { useEffect, useRef, useState } from 'react'
+import { FormGroup, FormControl, Modal, Button } from 'react-bootstrap'
+import { useEditChannelMutation, useGetChannelsQuery } from '../../../store/api/baseApi'
 import * as Yup from 'yup'
-import { useTranslation } from "react-i18next"
-import { useDispatch, useSelector } from "react-redux"
-import { setCurrentChannelId } from "../../../store/slices/uiSlice"
-import { useToast } from "../../../hooks/useToast"
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentChannelId } from '../../../store/slices/uiSlice'
+import { useToast } from '../../../hooks/useToast'
 
 
 const Rename = ({ onHide }) => {
@@ -15,7 +15,7 @@ const Rename = ({ onHide }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [submitAttempted, setSubmitAttempted] = useState(false)
-  const modal = useSelector(state => state.ui.modal)
+  const modal = useSelector((state) => state.ui.modal)
   const { toastError, toastSuccess } = useToast()
 
   const validationSchema = Yup.object({
@@ -23,8 +23,8 @@ const Rename = ({ onHide }) => {
       .min(3, t('validation.min'))
       .max(20, t('validation.max'))
       .required(t('validation.required'))
-      .test('unique', t('validation.channelIsExist'), (value) => 
-        !channels.some(ch => ch.name.toLowerCase() === value?.toLocaleLowerCase())
+      .test('unique', t('validation.channelIsExist'), (value) =>
+        !channels.some((ch) => ch.name.toLowerCase() === value?.toLocaleLowerCase()),
       ),
   })
 
@@ -36,7 +36,7 @@ const Rename = ({ onHide }) => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: async (values, { resetForm, setSubmitting }) => {
-      
+
       setSubmitAttempted(true)
       const isValid = await formik.validateForm()
       if (!isValid) return
@@ -70,13 +70,17 @@ const Rename = ({ onHide }) => {
   return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t('channel.renameChannel')}</Modal.Title>
+        <Modal.Title>
+          {t('channel.renameChannel')}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={formik.handleSubmit}>
           <FormGroup>
-            <label htmlFor="name" className="visually-hidden">{t('channelName')}</label>
-            <FormControl 
+            <label htmlFor="name" className="visually-hidden">
+              {t('channelName')}
+            </label>
+            <FormControl
               required
               ref={inputRef}
               onBlur={formik.handleBlur}
@@ -87,9 +91,9 @@ const Rename = ({ onHide }) => {
               id='name'
             />
             {showError('name') && (
-             <FormControl.Feedback type="invalid" id="channelError">
-              {formik.errors.name}
-             </FormControl.Feedback> 
+              <FormControl.Feedback type="invalid" id="channelError">
+                {formik.errors.name}
+              </FormControl.Feedback>
             )}
           </FormGroup>
           <div id="invalidChannel" className="invalid-feedback text-danger mt-2">
@@ -100,12 +104,16 @@ const Rename = ({ onHide }) => {
               variant="secondary"
               onClick={onHide}
               disabled={isLoading}
-            >{t('modals.cancel')}</Button>
+            >
+              {t('modals.cancel')}
+            </Button>
             <Button
               type="submit"
               variant="primary"
               disabled={isLoading}
-            >{t('channel.rename')}</Button>
+            >
+              {t('channel.rename')}
+            </Button>
           </div>
         </form>
       </Modal.Body>

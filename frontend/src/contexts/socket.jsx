@@ -2,19 +2,18 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 import routes from '../routes'
 import { useRef } from 'react'
-import { useDispatch } from 'react-redux'
 import store from '../store'
 import baseApi from '../store/api/baseApi'
 
 const SocketContext = createContext()
 
 const websocket = () => {
-  const host = window.location.host 
-  const protocol = window.location.protocol 
+  const host = window.location.host
+  const protocol = window.location.protocol
 
   const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:'
   const wsUrl = `${wsProtocol}//${host}`
-  
+
   return wsUrl
 }
 
@@ -26,7 +25,6 @@ export const useSocket = () => {
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null)
   const socketRef = useRef(null)
-  const dispatch = useDispatch()
   let newSocket
 
   useEffect(() => {
@@ -34,7 +32,7 @@ export const SocketProvider = ({ children }) => {
       try {
 
         const baseUrl = websocket(routes.websocketUrl())
-        
+
         newSocket = io(baseUrl, {
           transports: ['websocket'],
           reconnection: true,
@@ -58,7 +56,6 @@ export const SocketProvider = ({ children }) => {
 
           newSocket.once('connect_error', (error) => {
             clearTimeout(timeout)
-            console.error('💥 Ошибка подключения:', error.message)
             reject(error)
           })
         })
@@ -69,24 +66,24 @@ export const SocketProvider = ({ children }) => {
               'getChannels',
               undefined,
               (draft) => {
-                const exists = draft.some(ch => ch.id === newChannel.id)
+                const exists = draft.some((ch) => ch.id === newChannel.id)
                 if (!exists) {
                   draft.push(newChannel)
                 }
-              }
-            )
+              },
+            ),
           )
         })
 
-        newSocket.on('removeChannel', ({ id }) => {          
+        newSocket.on('removeChannel', ({ id }) => {
           store.dispatch(
             baseApi.util.updateQueryData(
               'getChannels',
               undefined,
               (draft) => {
-                return draft.filter(ch => ch.id !== id)
-              }
-            )
+                return draft.filter((ch) => ch.id !== id)
+              },
+            ),
           )
         })
 
@@ -96,26 +93,26 @@ export const SocketProvider = ({ children }) => {
               'getChannels',
               undefined,
               (draft) => {
-                const index = draft.findIndex(ch => ch.id === updatedChannel.id)
+                const index = draft.findIndex((ch) => ch.id === updatedChannel.id)
                 if (index !== -1) {
                   draft[index] = updatedChannel
                 }
-              }
-            )
+              },
+            ),
           )
         })
 
-      newSocket.on('newMessage', (newMessage) => {
-        store.dispatch(
-          baseApi.util.updateQueryData(
-            'getMessages',
-            undefined,
-            (draft = []) => {
-              draft.push(newMessage)
-            }
+        newSocket.on('newMessage', (newMessage) => {
+          store.dispatch(
+            baseApi.util.updateQueryData(
+              'getMessages',
+              undefined,
+              (draft = []) => {
+                draft.push(newMessage)
+              },
+            ),
           )
-        )
-      })
+        })
 
       } catch (error) {
         console.error('💥 Ошибка инициализации сокета:', error)

@@ -63,8 +63,8 @@ export default {
       channelIsExist: 'Канал уже существует!',
       confirm: 'Пароли должны совпадать',
       minPas: 'Не менее 6 символов',
-      usernameTaken: 'Такой пользователь уже существует'
-      
+      usernameTaken: 'Такой пользователь уже существует',
+
     },
     modals: {
       cancel: 'Отменить',

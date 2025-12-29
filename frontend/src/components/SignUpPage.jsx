@@ -1,12 +1,12 @@
-import { useFormik } from "formik"
+import { useFormik } from 'formik'
 import signUpImg from '../assets/signUp.jpg'
 import { Form, Button } from 'react-bootstrap'
-import { useEffect, useRef, useState } from "react"
-import routes from "../routes"
+import { useEffect, useRef, useState } from 'react'
+import routes from '../routes'
 import axios from 'axios'
-import useAuth from "../hooks"
-import { useNavigate } from "react-router-dom"
-import { useTranslation } from "react-i18next"
+import useAuth from '../hooks'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import * as Yup from 'yup'
 
 export const SignUpPage = () => {
@@ -27,7 +27,7 @@ export const SignUpPage = () => {
       .min(6, t('validation.minPas')),
     confirmPassword: Yup.string()
       .required(t('validation.required'))
-      .oneOf([Yup.ref('password'), null], t('validation.confirm'))
+      .oneOf([Yup.ref('password'), null], t('validation.confirm')),
   })
 
   const formik = useFormik({
@@ -38,10 +38,10 @@ export const SignUpPage = () => {
     },
     onSubmit: async (values) => {
       setSubmitAttempted(true)
-      
+
       const isValid = await formik.validateForm()
       if (!isValid) return
-      
+
       try {
         const res = await axios.post(routes.signupPath(), {
           username: values.username.trim(),
@@ -53,18 +53,17 @@ export const SignUpPage = () => {
         localStorage.setItem('username', username)
         auth.logIn()
         navigate('/')
-      }
-      catch (err) {
+      } catch (err) {
         formik.setSubmitting(false)
         if (err.isAxiosError && err.response.status === 401) {
-          inputRef.current.select();
+          inputRef.current.select()
           return
         }
         if (err.response.status === 409) {
           console.log(err)
           formik.setFieldError('username', t('validation.usernameTaken'))
         }
-        throw err;
+        throw err
       }
     },
     validationSchema: signUpSchema,
@@ -91,9 +90,13 @@ export const SignUpPage = () => {
               </div>
               <div className="col-6">
                 <Form onSubmit={formik.handleSubmit} noValidate>
-                  <h1 className="text-center mb-3">{t('signUpPage.header')}</h1>
+                  <h1 className="text-center mb-3">
+                    {t('signUpPage.header')}
+                  </h1>
                   <Form.Group className="mb-3">
-                    <Form.Label htmlFor="username" className="visually-hidden">{t('signUpPage.name')}</Form.Label>
+                    <Form.Label htmlFor="username" className="visually-hidden">
+                      {t('signUpPage.name')}
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       onChange={formik.handleChange}
@@ -113,7 +116,9 @@ export const SignUpPage = () => {
                     )}
                   </Form.Group>
                   <Form.Group className="mb-3">
-                    <Form.Label htmlFor="password" className="visually-hidden">{t('signUpPage.password')}</Form.Label>
+                    <Form.Label htmlFor="password" className="visually-hidden">
+                      {t('signUpPage.password')}
+                    </Form.Label>
                     <Form.Control
                       type="password"
                       onChange={formik.handleChange}
@@ -132,7 +137,9 @@ export const SignUpPage = () => {
                     )}
                   </Form.Group>
                   <Form.Group className="mb-3">
-                    <Form.Label htmlFor="confirmPassword" className="visually-hidden">{t('signUpPage.confirmPassword')}</Form.Label>
+                    <Form.Label htmlFor="confirmPassword" className="visually-hidden">
+                      {t('signUpPage.confirmPassword')}
+                    </Form.Label>
                     <Form.Control
                       type="password"
                       onChange={formik.handleChange}
@@ -155,7 +162,9 @@ export const SignUpPage = () => {
                     className="w-100"
                     type="submit"
                     disabled={formik.isSubmitting}
-                  >{t('signUpPage.button')}</Button>
+                  >
+                    {t('signUpPage.button')}
+                  </Button>
                 </Form>
               </div>
             </div>

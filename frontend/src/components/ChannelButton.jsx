@@ -1,9 +1,9 @@
-import { Dropdown, Button, ButtonGroup } from "react-bootstrap"
+import { Dropdown, Button, ButtonGroup } from 'react-bootstrap'
 import classNames from 'classnames'
-import { useTranslation } from "react-i18next"
-import { setOpen } from "../store/slices/uiSlice"
-import store from "../store"
-import { useDispatch } from "react-redux"
+import { useTranslation } from 'react-i18next'
+import { setOpen } from '../store/slices/uiSlice'
+import store from '../store'
+import { useDispatch } from 'react-redux'
 import LeoProfanity from 'leo-profanity'
 
 export const ChannelButton = ({ channel, isSelected, onSelect }) => {
@@ -11,7 +11,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
   const dispatch = useDispatch()
   const id = channel.id
   const { t } = useTranslation()
-  
+
   const handleRemove = () => {
     dispatch(setOpen({ type: 'removing', id }))
     console.log(store.getState('ui'), channel.id)
@@ -48,7 +48,9 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           aria-label={LeoProfanity.clean(channel.name)}
           onClick={handleSelectChannel}
         >
-          <span className="me-1" aria-hidden="true">#</span>
+          <span className="me-1" aria-hidden="true">
+            #
+          </span>
           {LeoProfanity.clean(channel.name)}
         </Button>
         <Dropdown.Toggle
@@ -57,17 +59,23 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           id="dropdown-custom-2"
           className='border-0 mt-1'
         >
-          <span className="visually-hidden">{t('channelControl')}</span>
+          <span className="visually-hidden">
+            {t('channelControl')}
+          </span>
         </Dropdown.Toggle>
         <Dropdown.Menu className="options">
           <Dropdown.Item
             data-rename-id={channel.id}
             onClick={handleRename}
-          >{t('channel.rename')}</Dropdown.Item>
+          >
+            {t('channel.rename')}
+          </Dropdown.Item>
           <Dropdown.Item
             data-rename-id={channel.id}
             onClick={handleRemove}
-          >{t('channel.delete')}</Dropdown.Item>
+          >
+            {t('channel.delete')}
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
@@ -82,7 +90,9 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
       type="button"
       aria-label={channel.name}
     >
-      <span className="me-1" aria-hidden="true">#</span>
+      <span className="me-1" aria-hidden="true">
+        #
+      </span>
       {LeoProfanity.clean(channel.name)}
     </Button>
   )

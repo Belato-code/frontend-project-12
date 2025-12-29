@@ -30,12 +30,12 @@ const baseApi = createApi({
       query: () => '/channels',
       providesTags: ['Channel'],
     }),
-    
+
     getMessages: builder.query({
       query: () => '/messages',
       providesTags: ['Message'],
     }),
-    
+
     addChannel: builder.mutation({
       query: (channelName) => ({
         url: '/channels',
@@ -44,7 +44,7 @@ const baseApi = createApi({
       }),
       invalidatesTags: ['Channel'],
     }),
-    
+
     addMessage: builder.mutation({
       query: (message) => ({
         url: '/messages',
@@ -53,7 +53,7 @@ const baseApi = createApi({
       }),
       invalidatesTags: ['Message'],
     }),
-    
+
     editChannel: builder.mutation({
       query: ({ id, channelName }) => ({
         url: `/channels/${id}`,
@@ -62,7 +62,7 @@ const baseApi = createApi({
       }),
       invalidatesTags: ['Channel'],
     }),
-    
+
     deleteChannel: builder.mutation({
       query: (id) => ({
         url: `/channels/${id}`,
@@ -83,5 +83,3 @@ export const {
 } = baseApi
 
 export default baseApi
-
-console.log(baseApi)

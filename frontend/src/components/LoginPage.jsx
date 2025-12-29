@@ -1,12 +1,12 @@
-import { useFormik } from "formik"
+import { useFormik } from 'formik'
 import loginImg from '../assets/login.jpg'
 import { Form, Button } from 'react-bootstrap'
-import { useEffect, useRef, useState } from "react"
-import routes from "../routes"
+import { useEffect, useRef, useState } from 'react'
+import routes from '../routes'
 import axios from 'axios'
-import useAuth from "../hooks"
-import { useNavigate } from "react-router-dom"
-import { useTranslation } from "react-i18next"
+import useAuth from '../hooks'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export const LoginPage = () => {
   const inputRef = useRef()
@@ -29,8 +29,7 @@ export const LoginPage = () => {
         localStorage.setItem('username', username)
         auth.logIn()
         navigate('/')
-      }
-      catch (err) {
+      } catch (err) {
         setAuthFailed(true)
         formik.setSubmitting(false)
         if (err.isAxiosError && err.response.status === 401) {
@@ -57,9 +56,13 @@ export const LoginPage = () => {
               </div>
               <div className="col-6">
                 <Form onSubmit={formik.handleSubmit}>
-                  <h1 className="text-center">{t('logInPage.header')}</h1>
+                  <h1 className="text-center">
+                    {t('logInPage.header')}
+                  </h1>
                   <Form.Group className="mb-3">
-                    <Form.Label htmlFor="username" className="visually-hidden">{t('logInPage.name')}</Form.Label>
+                    <Form.Label htmlFor="username" className="visually-hidden">
+                      {t('logInPage.name')}
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       onChange={formik.handleChange}
@@ -73,7 +76,9 @@ export const LoginPage = () => {
                     />
                   </Form.Group>
                   <Form.Group className="mb-3">
-                    <Form.Label htmlFor="password" className="visually-hidden">{t('logInPage.password')}</Form.Label>
+                    <Form.Label htmlFor="password" className="visually-hidden">
+                      {t('logInPage.password')}
+                    </Form.Label>
                     <Form.Control
                       type="password"
                       onChange={formik.handleChange}
@@ -84,21 +89,27 @@ export const LoginPage = () => {
                       id="password"
                       required
                     />
-                    <Form.Control.Feedback type="invalid" className="invalid-feedback">{t('invalidAuth')}</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" className="invalid-feedback">
+                      {t('invalidAuth')}
+                    </Form.Control.Feedback>
                   </Form.Group>
-                  <Button variant="outline-primary" className="w-100" type="submit">{t('logInPage.button')}</Button>
+                  <Button variant="outline-primary" className="w-100" type="submit">
+                    {t('logInPage.button')}
+                  </Button>
                 </Form>
               </div>
+            </div>
+            <div className="card-footer p-3">
+              <div className="text-center">
+                {t('logInPage.linkPrefix')}
+                <a className="ps-2" href="/signup">
+                  {t('logInPage.link')}
+                </a>
               </div>
-                <div className="card-footer p-3">
-                  <div className="text-center">
-                    {t('logInPage.linkPrefix')}
-                    <a className="ps-2" href="/signup">{t('logInPage.link')}</a>
-                  </div>
-                </div>
             </div>
-            </div>
+          </div>
+        </div>
       </div>
-      </div>
+    </div>
   )
 }
