@@ -12,7 +12,7 @@ export const Channels = () => {
   const endRef = useRef()
   const { t } = useTranslation()
 
-  const currentChannelId = useSelector((state) => state.ui.currentChannelId)
+  const currentChannelId = useSelector(state => state.ui.currentChannelId)
 
   useEffect(() => {
     if (channels.length > 0 && !currentChannelId) {
@@ -56,7 +56,7 @@ export const Channels = () => {
         className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
         id="channels-box"
       >
-        {channels.map((channel) => (
+        {channels.map(channel => (
           <li key={channel.id} className="nav-item w-100">
             <ChannelButton
               channel={channel}

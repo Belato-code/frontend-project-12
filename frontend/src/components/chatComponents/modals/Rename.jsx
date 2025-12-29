@@ -50,7 +50,7 @@ const Rename = ({ onHide }) => {
         resetForm()
         onHide()
         toastSuccess(t('toast.channelRename'))
-      } catch (error) {
+      } catch {
         setSubmitting(false)
         toastError(t('toast.error'))
       }

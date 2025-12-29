@@ -30,7 +30,6 @@ export const ChatPage = () => {
 
   const currentChannelId = useSelector((state) => state.ui.currentChannelId)
   const modalInfo = useSelector((state) => state.ui.modal)
-  console.log('modal', modalInfo)
 
   const hideModal = () => {
     dispatch(setClose())

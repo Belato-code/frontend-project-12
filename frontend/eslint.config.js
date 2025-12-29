@@ -6,7 +6,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 export default [
   js.configs.recommended,
   {
-    files: ['**/*.js', '**/*.jsx'], // ← Исправил путь
+    files: ['**/*.js', '**/*.jsx'],
     plugins: {
       '@stylistic': stylistic,
       'react': react,
@@ -22,7 +22,7 @@ export default [
         document: 'readonly',
         window: 'readonly',
         navigator: 'readonly',
-        process: 'readonly', // ← Добавил для Node.js
+        process: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: {
@@ -31,7 +31,7 @@ export default [
       },
     },
     rules: {
-      // Stylistic правила
+
       '@stylistic/arrow-parens': 'error',
       '@stylistic/brace-style': 'error',
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
@@ -41,26 +41,22 @@ export default [
       '@stylistic/eol-last': 'error',
       '@stylistic/multiline-ternary': ['error', 'always-multiline'],
       '@stylistic/jsx-one-expression-per-line': 'error',
-      
-      // React правила
+
       'react/jsx-uses-react': 'error',
       'react/jsx-uses-vars': 'error',
       'react/react-in-jsx-scope': 'off', // Для React 17+
-      
-      // React Hooks
+
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      
-      // Базовые правила
+
       'no-unused-vars': 'error',
-      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     },
     settings: {
       react: {
         version: 'detect', // Автоопределение версии React
       },
     },
-    ignores: [ // ← Изменил с ignorePatterns
+    ignores: [
       'node_modules/',
       'build/',
       'dist/',

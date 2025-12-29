@@ -1,5 +1,4 @@
 import { Button, Container, Navbar } from 'react-bootstrap'
-import AuthContext from '../contexts/index.jsx'
 import { useState } from 'react'
 import { ChatPage } from './ChatPage'
 import { NotFound } from './404'
@@ -17,9 +16,9 @@ import useAuth from '../hooks'
 import { SocketProvider } from '../contexts/socket.jsx'
 import { useTranslation } from 'react-i18next'
 import routes from '../routes.js'
+import AuthContext from '../contexts/index.jsx'
 
 const AuthProvider = ({ children }) => {
-
   const [loggedIn, setLoggedIn] = useState(() => {
     return localStorage.getItem('authToken')
   })
@@ -30,7 +29,7 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false)
   }
   return (
-    <AuthContext.Provider value={{ logIn, logOut, loggedIn}}>
+    <AuthContext.Provider value={{ logIn, logOut, loggedIn }}>
       { children }
     </AuthContext.Provider>
   )
@@ -46,24 +45,29 @@ const AuthButton = () => {
     auth.logOut()
     navigate('/login')
   }
-  return auth.loggedIn
-    ? <>
-      <div className="me-2 text-warning-emphasis fs-4 navbar-text">
-        {localStorage.getItem('username')}
-      </div>
-      <Button onClick={handleLogOut}>
-        {t('navbar.logOut')}
-      </Button>
-    </>
-    : <>
-      <Button as={Link} to='/login' state={{ from: location }} className='me-1' variant="outline-primary">
-        {t('navbar.logIn')}
-      </Button>
-      <Button as={Link} to='/signup' state={{ from: location}} className='ms-1' variant="outline-primary">
-        {t('navbar.signUp')}
-      </Button>
-    </>
-
+  return (
+    auth.loggedIn
+      ? (
+        <>
+          <div className="me-2 text-warning-emphasis fs-4 navbar-text">
+            {localStorage.getItem('username')}
+          </div>
+          <Button onClick={handleLogOut}>
+            {t('navbar.logOut')}
+          </Button>
+        </>
+      )
+      : (
+        <>
+          <Button as={Link} to="/login" state={{ from: location }} className='me-1' variant="outline-primary">
+            {t('navbar.logIn')}
+          </Button>
+          <Button as={Link} to="/signup" state={{ from: location }} className='ms-1' variant="outline-primary">
+            {t('navbar.signUp')}
+          </Button>
+        </>
+      )
+  )
 }
 
 function App() {

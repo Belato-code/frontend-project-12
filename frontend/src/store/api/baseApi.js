@@ -1,4 +1,3 @@
-// store/api/baseApi.js - УПРОЩЕННАЯ версия
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const getAuthHeader = () => {

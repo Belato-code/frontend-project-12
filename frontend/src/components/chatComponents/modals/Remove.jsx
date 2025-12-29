@@ -21,7 +21,7 @@ const Remove = ({ onHide, channels }) => {
       dispatch(setCurrentChannelId(channels[0].id))
       onHide()
       toastSuccess(t('toast.channelRemove'))
-    } catch (error) {
+    } catch {
       toastError(t('toast.error'))
     }
   }

@@ -53,7 +53,6 @@ const Add = ({ onHide }) => {
         onHide()
       } catch (error) {
         setSubmitting(false)
-        console.error('Ошибка:', error)
         toastError(error.data?.message || t('toast.error'))
       }
     },

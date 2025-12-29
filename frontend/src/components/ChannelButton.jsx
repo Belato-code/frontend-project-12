@@ -2,23 +2,19 @@ import { Dropdown, Button, ButtonGroup } from 'react-bootstrap'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { setOpen } from '../store/slices/uiSlice'
-import store from '../store'
 import { useDispatch } from 'react-redux'
 import LeoProfanity from 'leo-profanity'
 
 export const ChannelButton = ({ channel, isSelected, onSelect }) => {
-
   const dispatch = useDispatch()
   const id = channel.id
   const { t } = useTranslation()
 
   const handleRemove = () => {
     dispatch(setOpen({ type: 'removing', id }))
-    console.log(store.getState('ui'), channel.id)
   }
   const handleRename = () => {
     dispatch(setOpen({ type: 'renaming', id }))
-    console.log(store.getState('ui'), channel.id)
   }
   const btnClass = classNames([
     'fs-5',
@@ -57,7 +53,7 @@ export const ChannelButton = ({ channel, isSelected, onSelect }) => {
           split
           variant={isSelected ? 'secondary' : 'light'}
           id="dropdown-custom-2"
-          className='border-0 mt-1'
+          className="border-0 mt-1"
         >
           <span className="visually-hidden">
             {t('channelControl')}

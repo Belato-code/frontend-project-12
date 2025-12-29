@@ -60,7 +60,6 @@ export const SignUpPage = () => {
           return
         }
         if (err.response.status === 409) {
-          console.log(err)
           formik.setFieldError('username', t('validation.usernameTaken'))
         }
         throw err
