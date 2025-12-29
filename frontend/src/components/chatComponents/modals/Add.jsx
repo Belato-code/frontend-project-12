@@ -1,5 +1,5 @@
 import { useFormik } from 'formik'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { FormGroup, FormControl, Modal, Button, Spinner } from 'react-bootstrap'
 import { useAddChannelMutation, useGetChannelsQuery } from '../../../store/api/baseApi'
 import * as Yup from 'yup'
@@ -127,7 +127,7 @@ const Add = ({ onHide }) => {
                       {t('common.adding')}
                     </>
                   )
-                  : (
+                : (
                     t('modals.send')
                   )}
             </Button>

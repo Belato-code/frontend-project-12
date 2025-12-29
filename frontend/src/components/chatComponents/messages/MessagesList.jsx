@@ -22,7 +22,7 @@ export const MessagesList = ({ messages, currentChannelId }) => {
               </p>
             </div>
           )
-          : (
+        : (
             messages.map(message => (
               <div key={message.id || message.timestamp} className="mb-2">
                 <div>

@@ -57,7 +57,7 @@ const AuthButton = () => {
             </Button>
           </>
         )
-        : (
+      : (
           <>
             <Button as={Link} to="/login" state={{ from: location }} className="me-1" variant="outline-primary">
               {t('navbar.logIn')}
