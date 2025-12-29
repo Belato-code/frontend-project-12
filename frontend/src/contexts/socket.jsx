@@ -32,13 +32,10 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     const initSocket = async () => {
       try {
-        const token = localStorage.getItem('authToken')
-        if (!token) return
 
         const baseUrl = websocket(routes.websocketUrl())
         
         newSocket = io(baseUrl, {
-          auth: { token: `Bearer ${token}` },
           transports: ['websocket'],
           reconnection: true,
           reconnectionDelay: 100,
