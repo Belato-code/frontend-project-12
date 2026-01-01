@@ -69,8 +69,6 @@ export const SignUpPage = () => {
     validateOnBlur: true,
   })
 
-
-
   useEffect(() => {
     inputRef.current.focus()
   }, [])
