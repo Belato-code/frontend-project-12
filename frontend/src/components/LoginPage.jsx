@@ -8,6 +8,31 @@ import useAuth from '../hooks'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
+const createLoginPageHandler = (dependencies) => {
+  const { auth, navigate, inputRef, setAuthFailed } = dependencies
+
+  return async (values, { setSubmitting }) => {
+    setAuthFailed(false)
+    try {
+      const res = await axios.post(routes.loginPath(), values)
+      const { token, username } = res.data
+      localStorage.setItem('authToken', token)
+      localStorage.setItem('username', username)
+      auth.logIn()
+      navigate('/')
+    }
+    catch (err) {
+      setAuthFailed(true)
+      setSubmitting(false)
+      if (err.isAxiosError && err.response.status === 401) {
+        inputRef.current.select()
+        return
+      }
+      throw err
+    }
+  }
+}
+
 export const LoginPage = () => {
   const inputRef = useRef()
   const auth = useAuth()
@@ -15,30 +40,21 @@ export const LoginPage = () => {
   const { t } = useTranslation()
   const [authFailed, setAuthFailed] = useState(false)
 
+  const logInHandler = createLoginPageHandler({
+    auth,
+    navigate,
+    inputRef,
+    setAuthFailed,
+  })
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, formikHelpers) => {
       setAuthFailed(false)
-      try {
-        const res = await axios.post(routes.loginPath(), values)
-        const { token, username } = res.data
-        localStorage.setItem('authToken', token)
-        localStorage.setItem('username', username)
-        auth.logIn()
-        navigate('/')
-      }
-      catch (err) {
-        setAuthFailed(true)
-        formik.setSubmitting(false)
-        if (err.isAxiosError && err.response.status === 401) {
-          inputRef.current.select()
-          return
-        }
-        throw err
-      }
+      await logInHandler(values, formikHelpers)
     },
   })
 

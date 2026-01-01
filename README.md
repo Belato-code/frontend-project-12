@@ -3,3 +3,19 @@
 
 ### Ссылка на проект
 https://slack-chat-lsgl.onrender.com
+
+### Установка
+```
+make install
+make postinstall
+```
+
+### Запуск сервера
+```
+make start
+```
+
+### Запуск линтера
+```
+make lint-frontend
+```

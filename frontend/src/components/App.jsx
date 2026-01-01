@@ -1,7 +1,7 @@
 import { Button, Container, Navbar } from 'react-bootstrap'
 import { useState } from 'react'
 import { ChatPage } from './ChatPage'
-import { NotFound } from './404'
+import { NotFound } from './NotFoundPage.jsx'
 import { LoginPage } from './LoginPage'
 import { SignUpPage } from './SignUpPage.jsx'
 import {

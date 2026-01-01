@@ -4,32 +4,37 @@ import { useRef, useEffect } from 'react'
 import { useAddMessageMutation } from '../../../store/api/baseApi'
 import { useTranslation } from 'react-i18next'
 
+const createModalHandler = ({ addMessage, username, selectedChannelId }) => {
+  return async (values, { resetForm }) => {
+    const text = values.body.trim()
+    if (!text || !selectedChannelId) return
+
+    try {
+      await addMessage({
+        body: text,
+        channelId: selectedChannelId,
+        username,
+      }).unwrap()
+      resetForm()
+    }
+    catch (error) {
+      console.error('💥 Ошибка:', error)
+    }
+  }
+}
+
 export const MessageForm = ({ selectedChannelId }) => {
   const inputRef = useRef(null)
   const [addMessage, { isLoading }] = useAddMessageMutation()
   const { t } = useTranslation()
 
   const username = localStorage.getItem('username')
+  const modalHandler = createModalHandler({ addMessage, username, selectedChannelId })
 
   const formik = useFormik({
     initialValues: { body: '' },
-    onSubmit: async (values) => {
-      const text = values.body.trim()
-      if (!text || !selectedChannelId) return
-
-      try {
-        await addMessage({
-          body: text,
-          channelId: selectedChannelId,
-          username,
-        }).unwrap()
-
-        console.log('✅ Сообщение отправлено через API')
-        formik.resetForm()
-      }
-      catch (error) {
-        console.error('💥 Ошибка:', error)
-      }
+    onSubmit: async (values, formikHelpers) => {
+      await modalHandler(values, formikHelpers)
     },
   })
 

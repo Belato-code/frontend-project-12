@@ -1,28 +1,29 @@
-import stylistic from '@stylistic/eslint-plugin'
 import js from '@eslint/js'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
+import globals from 'globals'
+import pluginReact from 'eslint-plugin-react'
+import { defineConfig } from 'eslint/config'
+import { includeIgnoreFile } from '@eslint/compat'
+import stylistic from '@stylistic/eslint-plugin'
+import { fileURLToPath } from 'url'
 
-export default [
-  js.configs.recommended,
+const gitIgnorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
+
+export default defineConfig([
+  includeIgnoreFile(gitIgnorePath),
+
+  // Основной конфиг
   {
-    files: ['**/*.js', '**/*.jsx'],
+    files: ['**/*.{js,mjs,cjs,jsx}'],
     plugins: {
       '@stylistic': stylistic,
-      'react': react,
-      'react-hooks': reactHooks,
+      'react': pluginReact,
     },
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
-        console: 'readonly',
-        localStorage: 'readonly',
-        sessionStorage: 'readonly',
-        document: 'readonly',
-        window: 'readonly',
-        navigator: 'readonly',
-        process: 'readonly',
+        ...globals.browser,
+        process: 'readonly', // Добавляем process
       },
       parserOptions: {
         ecmaFeatures: {
@@ -31,37 +32,21 @@ export default [
       },
     },
     rules: {
-
-      '@stylistic/arrow-parens': 'error',
-      '@stylistic/brace-style': 'error',
-      '@stylistic/comma-dangle': ['error', 'always-multiline'],
-      '@stylistic/indent': ['error', 2],
-      '@stylistic/quotes': ['error', 'single'],
-      '@stylistic/no-trailing-spaces': 'error',
-      '@stylistic/eol-last': 'error',
-      '@stylistic/multiline-ternary': ['error', 'always-multiline'],
-      '@stylistic/jsx-one-expression-per-line': 'error',
-
-      'react/jsx-uses-react': 'error',
-      'react/jsx-uses-vars': 'error',
-      'react/react-in-jsx-scope': 'off', // Для React 17+
-
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-
-      'no-unused-vars': 'error',
+      // JavaScript правила
+      ...js.configs.recommended.rules,
+      // Stylistic правила
+      ...stylistic.configs.recommended.rules,
+      // React правила
+      ...pluginReact.configs.recommended.rules,
+      // Кастомные React правила
+      'react/prop-types': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
     },
     settings: {
       react: {
-        version: 'detect', // Автоопределение версии React
+        version: 'detect',
       },
     },
-    ignores: [
-      'node_modules/',
-      'build/',
-      'dist/',
-      'coverage/',
-      '*.config.js',
-    ],
   },
-]
+])

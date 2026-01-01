@@ -2,11 +2,46 @@ import { useFormik } from 'formik'
 import { useEffect, useRef, useState } from 'react'
 import { FormGroup, FormControl, Modal, Button } from 'react-bootstrap'
 import { useEditChannelMutation, useGetChannelsQuery } from '../../../store/api/baseApi'
-import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentChannelId } from '../../../store/slices/uiSlice'
 import { useToast } from '../../../hooks/useToast'
+import { validationSchema } from '../../../validation'
+
+const createModalHandler = (dependencies) => {
+  const {
+    dispatch,
+    onHide,
+    toastSuccess,
+    toastError,
+    t,
+    modal,
+    validationSchema,
+    renameChannel,
+    setSubmitAttempted,
+  } = dependencies
+
+  return async (values, { resetForm, setSubmitting }) => {
+    setSubmitAttempted(true)
+    try {
+      await validationSchema.validate(values, { abortEarly: false })
+
+      const id = modal.id
+      const channelName = values.name.trim()
+
+      const response = await renameChannel({ id, channelName }).unwrap()
+
+      dispatch(setCurrentChannelId(response.id))
+      resetForm()
+      onHide()
+      toastSuccess(t('toast.channelRename'))
+    }
+    catch {
+      setSubmitting(false)
+      toastError(t('toast.error'))
+    }
+  }
+}
 
 const Rename = ({ onHide }) => {
   const [renameChannel, { isLoading }] = useEditChannelMutation()
@@ -17,42 +52,28 @@ const Rename = ({ onHide }) => {
   const modal = useSelector(state => state.ui.modal)
   const { toastError, toastSuccess } = useToast()
 
-  const validationSchema = Yup.object({
-    name: Yup.string()
-      .min(3, t('validation.min'))
-      .max(20, t('validation.max'))
-      .required(t('validation.required'))
-      .test('unique', t('validation.channelIsExist'), value =>
-        !channels.some(ch => ch.name.toLowerCase() === value?.toLocaleLowerCase()),
-      ),
+  const currentSchema = validationSchema(t, channels)
+  const modalHandler = createModalHandler({
+    dispatch,
+    onHide,
+    toastSuccess,
+    toastError,
+    t,
+    modal,
+    validationSchema: currentSchema,
+    renameChannel,
+    setSubmitAttempted,
   })
 
   const formik = useFormik({
     initialValues: {
       name: '',
     },
-    validationSchema,
+    validationSchema: currentSchema,
     validateOnChange: false,
     validateOnBlur: true,
-    onSubmit: async (values, { resetForm, setSubmitting }) => {
-      setSubmitAttempted(true)
-      const isValid = await formik.validateForm()
-      if (!isValid) return
-
-      try {
-        const id = modal.id
-        const channelName = values.name.trim()
-        const response = await renameChannel({ id, channelName })
-        dispatch(setCurrentChannelId(response.data.id))
-        setSubmitting(false)
-        resetForm()
-        onHide()
-        toastSuccess(t('toast.channelRename'))
-      }
-      catch {
-        setSubmitting(false)
-        toastError(t('toast.error'))
-      }
+    onSubmit: async (values, formikHelpers) => {
+      await modalHandler(values, formikHelpers)
     },
   })
 

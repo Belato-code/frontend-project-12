@@ -2,12 +2,43 @@ import { useFormik } from 'formik'
 import { useEffect, useRef } from 'react'
 import { FormGroup, FormControl, Modal, Button, Spinner } from 'react-bootstrap'
 import { useAddChannelMutation, useGetChannelsQuery } from '../../../store/api/baseApi'
-import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { setCurrentChannelId } from '../../../store/slices/uiSlice'
 import { useToast } from '../../../hooks/useToast'
 import LeoProfanity from 'leo-profanity'
+import { validationSchema } from '../../../validation'
+
+const createModalHandler = (dependencies) => {
+  const {
+    dispatch,
+    toastSuccess,
+    toastError,
+    onHide,
+    addChannel,
+    t,
+    validationSchema,
+  } = dependencies
+  return async (values, { setSubmitting }) => {
+    try {
+      await validationSchema.validate(values, { abortEarly: false })
+
+      const cleanName = LeoProfanity.clean(values.name.trim())
+      const response = await addChannel(cleanName).unwrap()
+
+      dispatch(setCurrentChannelId(response.id))
+      toastSuccess(t('toast.channelAdd'))
+      onHide()
+    }
+    catch (error) {
+      setSubmitting(false)
+      if (error.name === 'ValidationError') {
+        toastError(error.errors[0] || t('toast.error'))
+        return
+      }
+    }
+  }
+}
 
 const Add = ({ onHide }) => {
   const [addChannel, { isLoading: isAdding }] = useAddChannelMutation()
@@ -16,45 +47,25 @@ const Add = ({ onHide }) => {
   const dispatch = useDispatch()
   const { toastError, toastSuccess } = useToast()
 
-  const validationSchema = Yup.object({
-    name: Yup.string()
-      .trim()
-      .min(3, t('validation.min'))
-      .max(20, t('validation.max'))
-      .required(t('validation.required'))
-      .test('unique', t('validation.channelIsExist'), (value) => {
-        if (!value) return true
-        return !channels.some(ch =>
-          ch.name.toLowerCase() === value.toLowerCase().trim(),
-        )
-      }),
+  const currentSchema = validationSchema(t, channels)
+  const modalHandler = createModalHandler({
+    dispatch,
+    toastSuccess,
+    toastError,
+    onHide,
+    addChannel,
+    t,
+    validationSchema: currentSchema,
   })
 
   const formik = useFormik({
     initialValues: {
       name: '',
     },
-    onSubmit: async (values, { setSubmitting }) => {
-      await formik.validateForm()
-
-      if (Object.keys(formik.errors).length > 0) {
-        setSubmitting(false)
-        return
-      }
-
-      try {
-        const cleanName = LeoProfanity.clean(values.name.trim())
-        const response = await addChannel(cleanName).unwrap()
-        dispatch(setCurrentChannelId(response.id))
-        toastSuccess(t('toast.channelAdd'))
-        onHide()
-      }
-      catch (error) {
-        setSubmitting(false)
-        toastError(error.data?.message || t('toast.error'))
-      }
+    onSubmit: async (values, formikHelpers) => {
+      await modalHandler(values, formikHelpers)
     },
-    validationSchema: validationSchema,
+    validationSchema: currentSchema,
     validateOnChange: false,
   })
 

@@ -7,7 +7,42 @@ import axios from 'axios'
 import useAuth from '../hooks'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import * as Yup from 'yup'
+import { signUpSchema } from '../validation'
+
+const createSignUpHandler = (dependencies) => {
+  const { auth, navigate, t, inputRef } = dependencies
+
+  return async (values, { setSubmitting, setFieldError }) => {
+    try {
+      const res = await axios.post(routes.signupPath(), {
+        username: values.username.trim(),
+        password: values.password,
+      })
+
+      const { token, username } = res.data
+      localStorage.setItem('authToken', token)
+      localStorage.setItem('username', username)
+      auth.logIn()
+      navigate('/')
+    }
+    catch (err) {
+      setSubmitting(false)
+
+      if (err.isAxiosError) {
+        if (err.response?.status === 409) {
+          setFieldError('username', t('validation.usernameTaken'))
+          inputRef.current?.select()
+          return
+        }
+        if (err.response?.status === 401) {
+          inputRef.current?.select()
+          return
+        }
+      }
+      throw err
+    }
+  }
+}
 
 export const SignUpPage = () => {
   const inputRef = useRef()
@@ -16,19 +51,8 @@ export const SignUpPage = () => {
   const { t } = useTranslation()
   const [submitAttempted, setSubmitAttempted] = useState(false)
 
-  const signUpSchema = Yup.object().shape({
-    username: Yup.string()
-      .trim()
-      .required(t('validation.required'))
-      .min(3, t('validation.signUp'))
-      .max(20, t('validation.signUp')),
-    password: Yup.string()
-      .required(t('validation.required'))
-      .min(6, t('validation.minPas')),
-    confirmPassword: Yup.string()
-      .required(t('validation.required'))
-      .oneOf([Yup.ref('password'), null], t('validation.confirm')),
-  })
+  const currentSchema = signUpSchema(t)
+  const signUpHandler = createSignUpHandler({ auth, navigate, t, inputRef })
 
   const formik = useFormik({
     initialValues: {
@@ -36,40 +60,16 @@ export const SignUpPage = () => {
       password: '',
       confirmPassword: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, formikHelpers) => {
       setSubmitAttempted(true)
-
-      const isValid = await formik.validateForm()
-      if (!isValid) return
-
-      try {
-        const res = await axios.post(routes.signupPath(), {
-          username: values.username.trim(),
-          password: values.password,
-        })
-
-        const { token, username } = res.data
-        localStorage.setItem('authToken', token)
-        localStorage.setItem('username', username)
-        auth.logIn()
-        navigate('/')
-      }
-      catch (err) {
-        formik.setSubmitting(false)
-        if (err.isAxiosError && err.response.status === 401) {
-          inputRef.current.select()
-          return
-        }
-        if (err.response.status === 409) {
-          formik.setFieldError('username', t('validation.usernameTaken'))
-        }
-        throw err
-      }
+      await signUpHandler(values, formikHelpers)
     },
-    validationSchema: signUpSchema,
+    validationSchema: currentSchema,
     validateOnChange: true,
     validateOnBlur: true,
   })
+
+
 
   useEffect(() => {
     inputRef.current.focus()
